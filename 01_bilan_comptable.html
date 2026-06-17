@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 1 : Le Bilan Comptable</title>
+<style>
+  :root {
+    --primary: #FF9F1C;
+    --secondary: #2EC4B6;
+    --accent: #E71D36;
+    --dark: #011627;
+    --light: #FDFFFC;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--accent);
+    text-align: center;
+    border-bottom: 4px dashed var(--primary);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #57606f;
+    background-color: #ecf0f1;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .alert-box {
+    background-color: #fdedec;
+    border-left: 6px solid var(--accent);
+    padding: 18px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--primary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #ecf0f1;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+  }
+  .tab-btn.active {
+    background-color: var(--primary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 160px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn, button.quiz-btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+  }
+  button.check-btn:hover, button.quiz-btn:hover {
+    background-color: #209b8f;
+  }
+  button.check-btn:active, button.quiz-btn:active {
+    transform: scale(0.98);
+  }
+  .quiz-btn.immobilise-btn {
+    background-color: #e67e22;
+  }
+  .quiz-btn.immobilise-btn:hover {
+    background-color: #d35400;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+  .nav-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- BOUTON RETOUR SOMMAIRE HAUT -->
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 1 : Une photographie du patrimoine de l’entreprise
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <!-- ILLUSTRATION 1: LA BOULANGERIE ET LA CATHÉDRALE -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto" style="border-radius: 8px;">
+      <!-- Ciel nocturne/aube -->
+      <defs>
+        <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#0b1d3a" />
+          <stop offset="60%" stop-color="#1f4068" />
+          <stop offset="100%" stop-color="#e43f5a" />
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#f39c12" />
+          <stop offset="100%" stop-color="#f1c40f" />
+        </linearGradient>
+      </defs>
+      <rect width="800" height="350" fill="url(#skyGrad)" />
+      
+      <!-- Silhouette Cathédrale de Chartres stylisée -->
+      <path d="M 40 300 L 60 120 L 75 120 L 80 50 L 85 120 L 100 120 L 120 300 Z" fill="#162447" opacity="0.7"/>
+      <path d="M 115 300 L 130 90 L 145 90 L 150 30 L 155 90 L 170 90 L 185 300 Z" fill="#162447" opacity="0.6"/>
+      <line x1="80" y1="50" x2="80" y2="35" stroke="#162447" stroke-width="3" opacity="0.7" />
+      <line x1="150" y1="30" x2="150" y2="15" stroke="#162447" stroke-width="3" opacity="0.6" />
+
+      <!-- Sol de la rue pavée -->
+      <rect x="0" y="280" width="800" height="70" fill="#1b1b2f"/>
+      <ellipse cx="200" cy="310" rx="30" ry="8" fill="#162447" />
+      <ellipse cx="450" cy="330" rx="40" ry="10" fill="#162447" />
+
+      <!-- Devanture de la Boulangerie -->
+      <rect x="300" y="140" width="420" height="140" fill="#1f4068" rx="8" stroke="#111" stroke-width="3"/>
+      <!-- Store banne rouge -->
+      <polygon points="280,140 740,140 710,175 310,175" fill="#e43f5a" stroke="#111" stroke-width="2"/>
+      <path d="M 310 175 Q 335 190 360 175 Q 385 190 410 175 Q 435 190 460 175 Q 485 190 510 175 Q 535 190 560 175 Q 585 190 610 175 Q 635 190 660 175 Q 685 190 710 175" fill="#e43f5a" stroke="#111" stroke-width="2" />
+
+      <!-- Grande Vitrine Lumineuse -->
+      <rect x="330" y="185" width="200" height="80" fill="#fff3e0" rx="5" stroke="#111" stroke-width="2"/>
+      <!-- Pains dorés en vitrine -->
+      <ellipse cx="370" cy="240" rx="25" ry="10" fill="url(#goldGrad)"/>
+      <line x1="355" y1="235" x2="362" y2="245" stroke="#d35400" stroke-width="2"/>
+      <line x1="365" y1="235" x2="372" y2="245" stroke="#d35400" stroke-width="2"/>
+      <line x1="375" y1="235" x2="382" y2="245" stroke="#d35400" stroke-width="2"/>
+
+      <ellipse cx="430" cy="235" rx="20" ry="12" fill="#e67e22"/>
+      <circle cx="485" cy="240" r="12" fill="#deb887"/>
+      <circle cx="485" cy="240" r="8" fill="none" stroke="#ba8c59" stroke-width="2" stroke-dasharray="4,2"/>
+
+      <!-- Porte d'entrée de la boutique -->
+      <rect x="560" y="185" width="70" height="95" fill="#e43f5a" rx="2" stroke="#111" stroke-width="2"/>
+      <rect x="575" y="195" width="40" height="40" fill="#fff3e0"/>
+      <circle cx="620" cy="235" r="4" fill="#ff9f1c"/>
+
+      <!-- Enseigne lumineuse (Modifiée avec le nouveau nom) -->
+      <rect x="310" y="90" width="400" height="40" fill="#011627" rx="5" stroke="#ff9f1c" stroke-width="3" />
+      <text x="510" y="116" fill="#ff9f1c" font-family="'Impact', Arial, sans-serif" font-size="17" letter-spacing="0.5" text-anchor="middle">HARRY PÉTRIN ET LA BAGUETTE DE CHARTRES</text>
+    </svg>
+  </div>
+
+  <p>Le bilan comptable représente le patrimoine de l’entreprise à un instant T[cite: 1]. C'est exactement comme si on prenait une photo panoramique de ton fournil un soir de réveillon. Ce patrimoine est composé des biens et des dettes[cite: 1]. Pour organiser tout ça sans s'emmêler les pinceaux, le bilan est coupé en deux grandes colonnes : les <strong>Actifs</strong> à gauche, et les <strong>Passifs</strong> à droite[cite: 1].</p>
+
+  <h2>1. Les Actifs (Les Biens)</h2>
+  <p>Les actifs représentent les biens que possède l’entreprise[cite: 1]. Ce sont tous les ingrédients et le matériel qui te permettent de pétrir et de travailler au quotidien.</p>
+  <ul>
+    <li><strong>Les actifs immobilisés :</strong> Ce sont les biens qui restent durablement dans l’entreprise, soit plus d’un an[cite: 1]. 
+      <ul>
+        <li><em>Incorporels</em> : Le droit au bail ou ton précieux fonds commercial[cite: 1].</li>
+        <li><em>Corporels</em> : Ton four à sole mécanisé, le pétrin à spirale, la diviseuse ou la camionnette[cite: 1].</li>
+        <li><em>Financiers</em> : Les dépôts de garantie ou prêts bloqués à long terme[cite: 1].</li>
+      </ul>
+    </li>
+    <li><strong>Les actifs circulants :</strong> Ce sont les biens dont la valeur va varier sur l’année (ils restent moins d'un an)[cite: 1]. Par exemple : tes sacs de farine de tradition, la petite monnaie dans ta caisse, ou le montant en banque[cite: 1].</li>
+  </ul>
+
+  <h2>2. Les Passifs (Les Dettes et Financements)</h2>
+  <p>Les passifs correspondent aux éléments qui permettent de financer l’entreprise[cite: 1]. C'est l'origine des fonds nécessaires à l'acquisition de tes actifs.</p>
+  <ul>
+    <li><strong>Les capitaux propres :</strong> Les ressources financières que possède l’entreprise[cite: 1]. Cela comprend le <em>Capital</em> de départ apporté pour t'installer et le <em>Résultat</em> net de l'exercice (le bénéfice ou la perte)[cite: 1].</li>
+    <li><strong>Les dettes :</strong> C’est l’argent qu’une entreprise doit à un tiers[cite: 1]. L'emprunt à long terme signé auprès de ton banquier, l'ardoise en attente chez ton meunier (fournisseurs), ou les taxes dues à l'État (dettes fiscales et sociales)[cite: 1].</li>
+  </ul>
+
+  <!-- ILLUSTRATION 2: LA BALANCE COMPTABLE CARTOON -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 380" width="100%" height="auto">
+      <!-- Arrière-plan cartoon -->
+      <rect width="800" height="380" fill="#fcf8f2" rx="10"/>
+      
+      <!-- Socle et pilier de la balance -->
+      <polygon points="350,360 450,360 420,320 380,320" fill="#747d8c" stroke="#2f3542" stroke-width="3" />
+      <rect x="390" y="140" width="20" height="180" fill="#95a5a6" stroke="#2f3542" stroke-width="3" />
+      
+      <!-- Fléau (Axe horizontal en équilibre) -->
+      <line x1="160" y1="140" x2="640" y2="140" stroke="#2f3542" stroke-width="10" stroke-linecap="round" />
+      <circle cx="400" cy="140" r="10" fill="#e74c3c" />
+
+      <!-- Plateau GAUCHE - ACTIF -->
+      <line x1="160" y1="140" x2="100" y2="260" stroke="#57606f" stroke-width="4" />
+      <line x1="160" y1="140" x2="220" y2="260" stroke="#57606f" stroke-width="4" />
+      <polygon points="70,260 250,260 230,275 90,275" fill="#2EC4B6" stroke="#2f3542" stroke-width="3" />
+      
+      <!-- Éléments sur l'ACTIF -->
+      <g id="boulange-items">
+        <path d="M 110 245 Q 130 220 160 245 Q 140 255 110 245 Z" fill="#ffb961" stroke="#2f3542" stroke-width="2"/>
+        <ellipse cx="180" cy="245" rx="30" ry="15" fill="#d35400" stroke="#2f3542" stroke-width="2" />
+        <line x1="170" y1="235" x2="190" y2="255" stroke="#fff" stroke-width="2" />
+        <line x1="160" y1="240" x2="180" y2="250" stroke="#fff" stroke-width="2" />
+      </g>
+      <text x="160" y="310" font-family="'Arial Black', sans-serif" font-size="22" fill="#1b7a70" text-anchor="middle">ACTIF</text>
+      <text x="160" y="335" font-family="sans-serif" font-size="14" fill="#57606f" text-anchor="middle">(Biens)</text>
+
+      <!-- Plateau DROIT - PASSIF -->
+      <line x1="640" y1="140" x2="580" y2="260" stroke="#57606f" stroke-width="4" />
+      <line x1="640" y1="140" x2="700" y2="260" stroke="#57606f" stroke-width="4" />
+      <polygon points="550,260 730,260 710,275 570,275" fill="#E71D36" stroke="#2f3542" stroke-width="3" />
+      
+      <!-- Éléments sur le PASSIF -->
+      <g id="money-items">
+        <path d="M 610 260 C 600 220 660 220 650 260 Z" fill="#ff9f1c" stroke="#2f3542" stroke-width="2" />
+        <circle cx="630" cy="225" r="8" fill="#e71d36" />
+        <text x="630" y="250" fill="#2f3542" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">€</text>
+      </g>
+      <text x="640" y="310" font-family="'Arial Black', sans-serif" font-size="22" fill="#b31226" text-anchor="middle">PASSIF</text>
+      <text x="640" y="335" font-family="sans-serif" font-size="14" fill="#57606f" text-anchor="middle">(Dettes / Capitaux)</text>
+
+      <!-- Petit Chef Boulanger Cartoon au centre -->
+      <circle cx="400" cy="85" r="22" fill="#fbc531" stroke="#2f3542" stroke-width="2" />
+      <path d="M 380 65 C 365 30, 435 30, 420 65 Z" fill="#fff" stroke="#2f3542" stroke-width="2" />
+      <rect x="385" y="58" width="30" height="10" fill="#fff" stroke="#2f3542" stroke-width="2" />
+      <circle cx="393" cy="82" r="2.5" fill="#2f3542" />
+      <circle cx="407" cy="82" r="2.5" fill="#2f3542" />
+      <path d="M 390 92 Q 400 102 410 92" fill="none" stroke="#2f3542" stroke-width="2.5" stroke-linecap="round" />
+      <text x="400" y="125" font-family="sans-serif" font-size="12" font-weight="bold" fill="#2f3542" text-anchor="middle">ÉQUILIBRE !</text>
+    </svg>
+  </div>
+
+  <h2>3. Le Résultat (L'équilibre magique)</h2>
+  <p>La règle d'or universelle : <strong>le total des actifs doit être égal au total des passifs</strong>[cite: 1]. La balance ne doit jamais pencher d’un côté de manière inexpliquée !</p>
+  <p>Après une année d’activité, il faudra déterminer le résultat qui correspond à la différence entre l’actif (les biens) et le passif (les dettes)[cite: 1]. Si le total des actifs est supérieur au total des passifs alors le résultat sera un bénéfice qui sera inscrit dans la rubrique des capitaux propres avec un signe +[cite: 1]. S'il est inférieur, c'est une perte avec un signe -[cite: 1]. Dans le commerce, c'est simple : marche ou crêpes !</p>
+
+  <div class="alert-box">
+    <h3>⚠️ Ne te fais pas rouler dans la farine !</h3>
+    <p>Garde les idées claires sur le vocabulaire : un <strong>emprunt</strong> est une dette (Passif) où l'entreprise emprunte de l'argent d'un tiers[cite: 1]. Le <strong>prêt</strong> est un bien (Actif), car c’est l’entreprise qui prête son argent à un tiers[cite: 1] !</p>
+  </div>
+
+  <h2>À toi de jouer : Le simulateur de Bilan</h2>
+  <p>Il faut transposer la théorie à la pratique. Voici les trois missions de notre dossier. Calcule le Résultat pour équilibrer le bilan de chaque entreprise !</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showMission('bases')">Les Bases (Rollin)</button>
+      <button class="tab-btn" onclick="showMission('maitrise')">Maîtrise (Lefranc)</button>
+      <button class="tab-btn" onclick="showMission('expert')">Expert (Ledoux)</button>
+    </div>
+
+    <!-- MISSION 1 -->
+    <div id="bases" class="mission-content active">
+      <h3>Mission : L'entreprise Rollin[cite: 1]</h3>
+      <p>Au 1er janvier N, voici les données : Caisse (5 678), Banque (25 467), Clients (23 890), Emprunts (152 390), Fournisseurs (55 755), Fonds commercial (250 000), Mobilier (56 700), Matériel info (12 230), Matériel transport (58 280), Stock (32 900)[cite: 1].</p>
+      <label>Quel est le montant total de l'Actif ? </label>
+      <input type="number" id="actifRollin" placeholder="Ex: 100000">
+      <br><br>
+      <label>Quel est le montant du Capital ? </label>
+      <input type="number" id="capRollin" placeholder="Ex: 50000">
+      <br>
+      <button class="check-btn" onclick="checkRollin()">Vérifier</button>
+      <div id="feedbackRollin" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 2 -->
+    <div id="maitrise" class="mission-content">
+      <h3>Mission : L'entreprise Lefranc[cite: 1]</h3>
+      <p>Le total recensé des Actifs (Frais d'établissement, Fonds commercial, Terrains, Agencement, Mobilier, Matériel info, Prêts, Stocks, Clients, Banque, Caisse, VMP) s'élève à <strong>1 729 950 €</strong>[cite: 1].</p>
+      <p>Le Passif d'origine comprend : Fournisseurs (700 500), Sécurité Sociale (49 000), État (69 000), Emprunts (432 000), Capital (800 000)[cite: 1].</p>
+      <label>Quel est le Résultat net de l'entreprise ? </label>
+      <input type="number" id="resLefranc" placeholder="Ex: -50000">
+      <br>
+      <button class="check-btn" onclick="checkLefranc()">Vérifier</button>
+      <div id="feedbackLefranc" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 3 -->
+    <div id="expert" class="mission-content">
+      <h3>Mission : L'entreprise Ledoux[cite: 1]</h3>
+      <p>Le total général consolidé de l'Actif au 31/12 (après constatation de l'usure du matériel et des nouveaux stocks) est de <strong>1 018 760 €</strong>[cite: 1].</p>
+      <p>Le Passif d'origine (hors résultat) se compose du Capital (500 000), Emprunts (180 000), Fournisseurs (175 000) et Dettes impôts (15 000)[cite: 1].</p>
+      <label>Calcule le Résultat final d'ajustement : </label>
+      <input type="number" id="resLedoux" placeholder="Ex: 140000">
+      <br>
+      <button class="check-btn" onclick="checkLedoux()">Vérifier</button>
+      <div id="feedbackLedoux" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- SECTION QUIZ INTERACTIF -->
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question éclair</h3>
+    <p>Si tu as <strong>500 € en monnaie physique</strong> dans le tiroir-caisse de ton point de vente, vas-tu répertorier cette somme dans les "actifs immobilisés" ou dans les "actifs circulants" ?</p>
+    
+    <button class="quiz-btn immobilise-btn" onclick="checkFinalQuiz('immobilise')">Actifs Immobilisés</button>
+    <button class="quiz-btn" onclick="checkFinalQuiz('circulant')">Actifs Circulants</button>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <!-- BOUTON RETOUR SOMMAIRE BAS -->
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showMission(missionId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(missionId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkRollin() {
+      const actif = document.getElementById('actifRollin').value;
+      const cap = document.getElementById('capRollin').value;
+      const fb = document.getElementById('feedbackRollin');
+      if(actif == 465145 && cap == 257000) {
+        fb.style.color = "green";
+        fb.innerHTML = "🎯 Excellent ! L'actif est bien de 465 145€ et le capital de 257 000€.";
+      } else {
+        fb.style.color = "red";
+        fb.innerHTML = "❌ Recompte bien la somme de tes actifs et soustrais les dettes pour équilibrer le capital d'ouverture.";
+      }
+    }
+
+    function checkLefranc() {
+      const res = document.getElementById('resLefranc').value;
+      const fb = document.getElementById('feedbackLefranc');
+      if(res == -320550) {
+        fb.style.color = "green";
+        fb.innerHTML = "🎯 Parfait ! C'est une perte sèche de -320 550€.";
+      } else {
+        fb.style.color = "red";
+        fb.innerHTML = "❌ La balance n'est pas droite. Vérifie ton calcul : Actif - Passif total.";
+      }
+    }
+
+    function checkLedoux() {
+      const res = document.getElementById('resLedoux').value;
+      const fb = document.getElementById('feedbackLedoux');
+      if(res == 148760) {
+        fb.style.color = "green";
+        fb.innerHTML = "🎯 Magnifique ! Le bénéfice net s'élève à 148 760€.";
+      } else {
+        fb.style.color = "red";
+        fb.innerHTML = "❌ Ce n'est pas tout à fait ça. Soustrais les 870 000 € de ressources au total de l'actif.";
+      }
+    }
+
+    function checkFinalQuiz(answer) {
+      const fb = document.getElementById('feedbackQuiz');
+      if(answer === 'circulant') {
+        fb.style.color = "green";
+        fb.innerHTML = "🎯 Bonne réponse ! Cet argent 'circule' rapidement pour rendre la monnaie aux clients ou faire des dépôts en banque. Il reste moins d'un an, c'est donc bien un actif circulant !";
+      } else {
+        fb.style.color = "red";
+        fb.innerHTML = "❌ Aïe, la pâte retombe ! Un actif immobilisé a vocation à rester des années dans l'entreprise (comme ton four ou ta vitrine). La monnaie de ta caisse est amenée à bouger tous les jours, c'est donc un actif circulant !";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 3 : Le Compte de Résultat</title>
+<style>
+  :root {
+    --primary: #D35400; 
+    --secondary: #2980B9; 
+    --accent: #F1C40F; 
+    --dark: #2C3E50;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #C0392B;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--secondary);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .concept-box {
+    background-color: #FEF9E7;
+    border-left: 6px solid var(--accent);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--secondary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  .data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+  }
+  .data-grid div {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.check-btn:hover {
+    background-color: #E67E22;
+  }
+  button.check-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  .nav-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- BOUTON RETOUR SOMMAIRE HAUT -->
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 3 : Le compte de résultat, baromètre de l'activité
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Dans les chapitres précédents, nous avons pris une photo de ton patrimoine avec le Bilan. Mais pour savoir si ta boulangerie a vraiment gagné sa croûte cette année, il faut mesurer son activité quotidienne. C'est le rôle du <strong>Compte de Résultat</strong> !</p>
+  <p>C'est ton baromètre. Il enregistre tout ce que tu as dépensé (tes Charges) et tout ce que tu as encaissé (tes Produits). Si tu as plus de produits que de charges, bingo, tu fais du bénéfice ! Sinon... tu es dans le pétrin avec une belle perte.</p>
+
+  <!-- ILLUSTRATION SVG : LE BAROMETRE DU BOULANGER -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto" style="border-radius: 8px;">
+      <rect width="800" height="350" fill="#FEF9E7"/>
+      
+      <!-- Thermomètre / Baromètre -->
+      <rect x="480" y="50" width="40" height="250" rx="20" fill="#ecf0f1" stroke="#2c3e50" stroke-width="4"/>
+      <defs>
+        <linearGradient id="thermoGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#C0392B" />
+          <stop offset="50%" stop-color="#F1C40F" />
+          <stop offset="100%" stop-color="#27AE60" />
+        </linearGradient>
+      </defs>
+      <rect x="485" y="120" width="30" height="175" rx="15" fill="url(#thermoGrad)"/>
+      <circle cx="500" cy="300" r="35" fill="#C0392B" stroke="#2c3e50" stroke-width="4"/>
+      
+      <!-- Graduations et textes -->
+      <line x1="525" y1="120" x2="540" y2="120" stroke="#2c3e50" stroke-width="3"/>
+      <text x="550" y="125" font-weight="bold" fill="#27AE60">BÉNÉFICE (Produits > Charges)</text>
+
+      <line x1="525" y1="200" x2="540" y2="200" stroke="#2c3e50" stroke-width="3"/>
+      <text x="550" y="205" font-weight="bold" fill="#D35400">POINT MORT (Équilibre)</text>
+
+      <line x1="525" y1="270" x2="540" y2="270" stroke="#2c3e50" stroke-width="3"/>
+      <text x="550" y="275" font-weight="bold" fill="#C0392B">PERTE (Charges > Produits)</text>
+
+      <!-- Bulle de dialogue -->
+      <rect x="60" y="30" width="280" height="70" rx="15" fill="#ffffff" stroke="#2c3e50" stroke-width="3"/>
+      <polygon points="190,100 200,120 210,100" fill="#ffffff"/>
+      <polyline points="190,100 200,120 210,100" fill="none" stroke="#2c3e50" stroke-width="3"/>
+      <line x1="192" y1="100" x2="208" y2="100" stroke="#ffffff" stroke-width="4"/> 
+      <text x="200" y="60" text-anchor="middle" font-weight="bold" font-size="16" fill="#2c3e50">Il faut que ça rapporte</text>
+      <text x="200" y="80" text-anchor="middle" font-weight="bold" font-size="16" fill="#2c3e50">du blé à la fin de l'année !</text>
+
+      <!-- Petit boulanger cartoon -->
+      <g transform="translate(200, 160)">
+        <rect x="-30" y="40" width="60" height="80" rx="15" fill="#ffffff" stroke="#2c3e50" stroke-width="3"/>
+        <circle cx="0" cy="0" r="35" fill="#F1C40F" stroke="#2c3e50" stroke-width="3"/>
+        <path d="M -25 -25 C -40 -70, 40 -70, 25 -25 Z" fill="#ffffff" stroke="#2c3e50" stroke-width="3"/>
+        <circle cx="-10" cy="-5" r="4" fill="#2c3e50"/>
+        <circle cx="10" cy="-5" r="4" fill="#2c3e50"/>
+        <path d="M -15 10 Q 0 25 15 10" fill="none" stroke="#2c3e50" stroke-width="3" stroke-linecap="round"/>
+        <!-- Bras qui montre le baromètre -->
+        <path d="M 30 60 Q 80 50 150 10" fill="none" stroke="#2c3e50" stroke-width="12" stroke-linecap="round"/>
+        <path d="M 30 60 Q 80 50 150 10" fill="none" stroke="#F1C40F" stroke-width="6" stroke-linecap="round"/>
+        <!-- Baguette sous le bras gauche -->
+        <path d="M -60 10 Q -40 -10 -20 -30" fill="none" stroke="#D35400" stroke-width="15" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+
+  <h2>1. Les Charges (Ce que tu dépenses)</h2>
+  <p>Les charges sont toutes les sommes qui sortent de la poche de l'entreprise ou qui constatent une perte de valeur. Pour être bien organisé, le plan comptable les divise en trois catégories :</p>
+  <ul>
+    <li><strong>Les charges d'exploitation :</strong> C'est la vie quotidienne du fournil ! L'achat de la farine (matières premières), la facture d'électricité pour le four, les salaires de tes apprentis, le loyer de la boutique.</li>
+    <li><strong>Les charges financières :</strong> C'est lié à tes emprunts. Quand tu rembourses le prêt de ta nouvelle chambre de fermentation, tu paies des intérêts à la banque. Ces intérêts sont des charges financières.</li>
+    <li><strong>Les charges exceptionnelles :</strong> Ce sont les accidents de parcours ou les événements rares. Une amende pour stationnement gênant lors d'une livraison, ou la valeur de ton vieux pétrin quand tu le mets à la casse.</li>
+  </ul>
+
+  <h2>2. Les Produits (Ce que tu encaisses)</h2>
+  <p>Les produits sont les sommes gagnées par l'entreprise. Là encore, la règle des trois catégories s'applique :</p>
+  <ul>
+    <li><strong>Les produits d'exploitation :</strong> Le cœur du métier. Les ventes de baguettes de tradition, de croissants, et les encaissements de tes contrats de fourniture de pain pour le restaurant d'en face.</li>
+    <li><strong>Les produits financiers :</strong> Si ta trésorerie se porte bien et que tu as placé de l'argent, les intérêts que cet argent te rapporte sont des produits financiers (ex: revenus de valeurs mobilières de placement).</li>
+    <li><strong>Les produits exceptionnels :</strong> Un événement rare en ta faveur. Par exemple, tu revends l'ancienne camionnette de livraison d'occasion : l'argent de cette vente est un produit exceptionnel !</li>
+  </ul>
+
+  <div class="concept-box">
+    <strong>💡 L'Astuce de l'Artisan : Les Dotations et Reprises</strong><br>
+    Tu verras souvent le mot "Dotations aux amortissements". C'est une charge qui constate l'usure de ton matériel (ton four perd de la valeur chaque année). À l'inverse, une "Reprise" est un produit qui annule une charge précédente estimée trop forte.
+  </div>
+
+  <h2>3. Le Résultat (Le verdict)</h2>
+  <p>L'équation est implacable : <strong>RÉSULTAT = Total des Produits - Total des Charges</strong>.</p>
+  <p>En regardant le détail, on peut même le découper en trois "sous-résultats" pour savoir exactement ce qui fait gagner (ou perdre) de l'argent :</p>
+  <ol>
+    <li><em>Le résultat d'exploitation :</em> Produits d'exploitation - Charges d'exploitation. (Est-ce que fabriquer et vendre du pain est rentable ?)</li>
+    <li><em>Le résultat financier :</em> Produits financiers - Charges financières. (La politique de prêt et de placement est-elle saine ?)</li>
+    <li><em>Le résultat exceptionnel :</em> Produits excep. - Charges excep. (A-t-on fait une bonne affaire en vendant le vieux matériel ?)</li>
+  </ol>
+  <p>L'addition de ces trois composantes, moins la participation des salariés et l'impôt, donne le <strong>Résultat Net de l'Exercice</strong> !</p>
+
+  <h2>À toi de jouer : Calcule le résultat de ces 3 boulangeries !</h2>
+  <p>Fais le tri entre les recettes et les dépenses pour déterminer la rentabilité de ces trois artisans installés dans l'agglomération chartraine.</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : La Mie de Beauce</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : Le Fournil Chartrain</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : L'Épi d'Or</button>
+    </div>
+
+    <!-- MISSION 1 : LES BASES -->
+    <div id="mission1" class="mission-content active">
+      <h3>Boulangerie "La Mie de Beauce" (Les Bases)</h3>
+      <p>Voici les données annuelles simplifiées de la boutique. <em>Attention au piège : une variation de stock négative vient <strong>diminuer</strong> le total de tes charges !</em></p>
+      
+      <div class="data-grid">
+        <div>Ventes de marchandises : 1 250 000 €</div>
+        <div>Achats de marchandises : 756 780 €</div>
+        <div>Production immobilisée (Produit) : 230 900 €</div>
+        <div>Variation de stocks (Charge) : <strong>-98 750 €</strong></div>
+        <div>Autres produits : 75 400 €</div>
+        <div>Services extérieurs : 35 430 €</div>
+        <div>Produits financiers : 45 600 €</div>
+        <div>Impôts et taxes : 12 350 €</div>
+        <div>Produits exceptionnels : 12 000 €</div>
+        <div>Salaires : 175 460 €</div>
+        <div></div>
+        <div>Charges sociales : 87 900 €</div>
+        <div></div>
+        <div>Charges d’intérêts : 28 700 €</div>
+        <div></div>
+        <div>Charges exceptionnelles : 67 000 €</div>
+        <div></div>
+        <div>Dotations d’exploitation : 58 900 €</div>
+        <div></div>
+        <div>Impôts sur les bénéfices : 350 800 €</div>
+      </div>
+
+      <div class="input-group">
+        <label>1. Total des Produits :</label>
+        <input type="number" id="m1_p" placeholder="Ex: 1000000">
+      </div>
+      <div class="input-group">
+        <label>2. Total des Charges (somme algébrique) :</label>
+        <input type="number" id="m1_c" placeholder="Ex: 900000">
+      </div>
+      <div class="input-group">
+        <label>3. Résultat Net (Produits - Charges) :</label>
+        <input type="number" id="m1_r" placeholder="Ex: 100000">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider le Compte de Résultat</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 2 : MAÎTRISE -->
+    <div id="mission2" class="mission-content">
+      <h3>Boulangerie "Le Fournil Chartrain" (Maîtrise)</h3>
+      <p>Additionne rigoureusement les produits d'un côté, et les charges de l'autre pour déterminer si le patron a gagné sa vie. <em>Ici, la variation de stock est positive (+10 200), elle s'ajoute normalement aux charges !</em></p>
+      
+      <div class="data-grid">
+        <div>Production vendue : 650 200 €</div>
+        <div>Achats de matières premières : 530 800 €</div>
+        <div>Production stockée : 10 400 €</div>
+        <div>Variation de stocks de matières : 10 200 €</div>
+        <div>Reprises exceptionnelles (Produit) : 14 900 €</div>
+        <div>Charges de personnel : 88 900 €</div>
+        <div>Produits des cessions (Vente actif) : 3 500 €</div>
+        <div>Loyer & Fournitures : 21 000 €</div>
+        <div>Produits financiers : 500 €</div>
+        <div>Impôts et taxes : 11 700 €</div>
+        <div></div>
+        <div>Dotations (Exploitation + Exceptionnelles + Financières) : 29 300 €</div>
+        <div></div>
+        <div>Valeurs comptables des actifs cédés : 33 500 €</div>
+        <div></div>
+        <div>Charges d’intérêts : 7 600 €</div>
+        <div></div>
+        <div>Autres charges et Publicité : 8 650 €</div>
+        <div></div>
+        <div>Impôt sur les bénéfices : 5 450 €</div>
+      </div>
+
+      <div class="input-group">
+        <label>1. Total des Produits :</label>
+        <input type="number" id="m2_p" placeholder="...">
+      </div>
+      <div class="input-group">
+        <label>2. Total des Charges :</label>
+        <input type="number" id="m2_c" placeholder="...">
+      </div>
+      <div class="input-group">
+        <label>3. Résultat Net :</label>
+        <input type="number" id="m2_r" placeholder="...">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Valider le Compte de Résultat</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 3 : EXPERT -->
+    <div id="mission3" class="mission-content">
+      <h3>Boulangerie "L'Épi d'Or" (Expert)</h3>
+      <p>Cette grosse structure a de nombreuses lignes comptables. Sois précis sur la calculatrice !</p>
+
+      <div class="data-grid">
+        <div>Production vendue : 1 350 700 €</div>
+        <div>Achats de matières premières : 754 600 €</div>
+        <div>Produits exceptionnels : 125 400 €</div>
+        <div>Variation de stocks de matières : 37 680 €</div>
+        <div>Produits des activités annexes : 78 900 €</div>
+        <div>Charges de personnel : 120 800 €</div>
+        <div>Subvention d’exploitation : 15 400 €</div>
+        <div>Dotations (Exploit. + Fin. + Excep.) : 80 500 €</div>
+        <div>Reprises (Financières + Excep.) : 14 700 €</div>
+        <div>Impôts et taxes diverses : 33 550 €</div>
+        <div>Production stockée : 5 300 €</div>
+        <div>Charges exceptionnelles : 12 450 €</div>
+        <div>Escomptes obtenus : 600 €</div>
+        <div>Participation & Impôts sur bénéfices : 27 570 €</div>
+        <div></div>
+        <div>Frais divers (Télécom, Entretien, Admin, Autres, Escomptes accordés) : 12 010 €</div>
+      </div>
+
+      <div class="input-group">
+        <label>1. Total des Produits :</label>
+        <input type="number" id="m3_p" placeholder="...">
+      </div>
+      <div class="input-group">
+        <label>2. Total des Charges :</label>
+        <input type="number" id="m3_c" placeholder="...">
+      </div>
+      <div class="input-group">
+        <label>3. Résultat Net :</label>
+        <input type="number" id="m3_r" placeholder="...">
+      </div>
+      <button class="check-btn" onclick="checkMission3()">Valider le Compte de Résultat</button>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- SECTION QUIZ INTERACTIF -->
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>Le moteur de ton pétrin à spirale lâche en plein milieu de la nuit. Tu fais venir un réparateur en urgence et tu règles la facture le lendemain. Dans quelle catégorie de ton compte de résultat vas-tu classer cette dépense ?</p>
+    
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+      <button class="tab-btn" onclick="checkFinalQuiz('fin', this)">Une charge financière</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('exp', this)">Une charge d'exploitation</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('exc', this)">Une charge exceptionnelle</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <!-- BOUTON RETOUR SOMMAIRE BAS -->
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const p = parseFloat(document.getElementById('m1_p').value);
+      const c = parseFloat(document.getElementById('m1_c').value);
+      const r = parseFloat(document.getElementById('m1_r').value);
+      const fb = document.getElementById('fb_m1');
+      
+      if (p === 1613900 && c === 1474570 && r === 139330) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Parfait ! La Mie de Beauce fait un très beau bénéfice de 139 330 € (1 613 900 € de Produits - 1 474 570 € de Charges). L'activité est très rentable !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ta pâte n'a pas assez levé ! Vérifie l'addition des colonnes. N'oublie pas : la variation de stock de -98 750 se soustrait du total des autres charges.";
+      }
+    }
+
+    function checkMission2() {
+      const p = parseFloat(document.getElementById('m2_p').value);
+      const c = parseFloat(document.getElementById('m2_c').value);
+      const r = parseFloat(document.getElementById('m2_r').value);
+      const fb = document.getElementById('fb_m2');
+      
+      if (p === 679500 && c === 747100 && r === -67600) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est exact ! Malheureusement, avec 747 100 € de charges contre seulement 679 500 € de produits, le Fournil Chartrain encaisse une perte sèche de -67 600 €. Il va falloir agir vite !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Erreur de calcul. Prends bien le soin de regrouper toutes les lignes des produits ensemble, et toutes les lignes des charges de l'autre.";
+      }
+    }
+
+    function checkMission3() {
+      const p = parseFloat(document.getElementById('m3_p').value);
+      const c = parseFloat(document.getElementById('m3_c').value);
+      const r = parseFloat(document.getElementById('m3_r').value);
+      const fb = document.getElementById('fb_m3');
+      
+      if (p === 1591000 && c === 1079160 && r === 511840) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Un vrai chef d'entreprise ! L'Épi d'Or dégage un superbe bénéfice net de 511 840 €. L'activité est parfaitement maîtrisée !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton compte de résultat n'est pas équilibré. Additionne bien toutes les données de droite pour les produits, et celles de gauche pour les charges.";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'exp') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Bonne réponse ! Bien que la panne soit un événement stressant, l'entretien et la réparation du matériel de production font partie inhérente de la vie normale (courante) d'une boulangerie. C'est une charge d'exploitation !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Non ! Même si la panne est soudaine, l'entretien de tes machines fait partie du cycle normal de ton métier de boulanger. Ce n'est ni lié à un emprunt (financier), ni un fait rarissime de destruction massive (exceptionnel). C'est bien une charge d'exploitation !";
+      }
+    }
+  </script>
+
+</body>
+</html>

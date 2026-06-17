@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 9 : Le choix des investissements</title>
+<style>
+  :root {
+    --primary: #9B59B6; /* Violet investissement */
+    --secondary: #2980B9; /* Bleu pro */
+    --accent: #F1C40F; /* Jaune doré */
+    --dark: #2C3E50;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #E74C3C;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header, .nav-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .nav-footer {
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--accent);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .concept-box {
+    background-color: #F4F6F6;
+    border-left: 6px solid var(--primary);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .certif-box {
+    background-color: #E8F8F5;
+    border: 2px solid var(--success);
+    padding: 18px;
+    margin: 25px 0;
+    border-radius: 10px;
+  }
+  .formula-box {
+    background: #FEF9E7;
+    border: 2px dashed var(--accent);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 15px 0;
+    color: var(--dark);
+    font-weight: bold;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--primary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn, button.quick-btn {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.quick-btn {
+    width: auto;
+    margin-right: 10px;
+    background-color: var(--dark);
+  }
+  button.check-btn:hover {
+    background-color: #D35400;
+  }
+  button.quick-btn:hover {
+    background-color: var(--secondary);
+  }
+  button.check-btn:active, button.quick-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 9 : Le choix des investissements
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Investir, c'est utiliser sa trésorerie aujourd'hui pour générer de la richesse demain. Mais acheter une nouvelle diviseuse ou refaire toute la vitrine de la boutique représente un risque. Pour que ce risque se transforme en bénéfice, il faut d'abord comprendre comment une machine perd de sa valeur (l'amortissement) et comment évaluer la véritable rentabilité d'un projet.</p>
+
+  <!-- ILLUSTRATION SVG 1 : L'AMORTISSEMENT -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto">
+      <rect width="800" height="350" fill="#EBF5FB" rx="15"/>
+      <text x="400" y="40" font-family="'Arial Black'" font-size="22" fill="#2C3E50" text-anchor="middle">L'USURE DU TEMPS : L'AMORTISSEMENT</text>
+      
+      <!-- Four neuf année 1 -->
+      <g transform="translate(100, 100)">
+        <rect x="0" y="0" width="120" height="150" fill="#BDC3C7" stroke="#2C3E50" stroke-width="4" rx="10"/>
+        <rect x="20" y="20" width="80" height="60" fill="#F39C12" stroke="#2C3E50" stroke-width="3"/>
+        <circle cx="60" cy="110" r="15" fill="#E74C3C" stroke="#2C3E50" stroke-width="2"/>
+        <text x="60" y="180" font-weight="bold" fill="#27AE60" text-anchor="middle">Valeur : 100%</text>
+        <text x="60" y="-15" font-weight="bold" fill="#2C3E50" text-anchor="middle">Année 1</text>
+        <circle cx="100" cy="0" r="15" fill="#F1C40F"/>
+        <text x="100" y="5" font-weight="bold" font-size="12" fill="#2C3E50" text-anchor="middle">NEUF</text>
+      </g>
+
+      <!-- Flèche du temps -->
+      <path d="M 250 175 Q 400 175 550 175" fill="none" stroke="#2980B9" stroke-width="6" stroke-dasharray="10,5" marker-end="url(#arrow)"/>
+      <text x="400" y="160" font-weight="bold" fill="#2980B9" text-anchor="middle">Usure (Annuités)</text>
+
+      <!-- Four usé année 5 -->
+      <g transform="translate(580, 100)">
+        <rect x="0" y="0" width="120" height="150" fill="#95A5A6" stroke="#2C3E50" stroke-width="4" rx="10"/>
+        <!-- Fissures -->
+        <path d="M 10 10 L 30 40 L 20 60" fill="none" stroke="#2C3E50" stroke-width="3"/>
+        <rect x="20" y="20" width="80" height="60" fill="#D35400" stroke="#2C3E50" stroke-width="3"/>
+        <circle cx="60" cy="110" r="15" fill="#C0392B" stroke="#2C3E50" stroke-width="2"/>
+        <text x="60" y="180" font-weight="bold" fill="#E74C3C" text-anchor="middle">Valeur : 0%</text>
+        <text x="60" y="-15" font-weight="bold" fill="#2C3E50" text-anchor="middle">Année 5</text>
+      </g>
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2980B9" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h2>1. L'Amortissement Comptable</h2>
+  <p>En comptabilité, tu n'enregistres pas l'achat d'un gros matériel (immobilisation) comme une simple dépense éphémère. Ce bien va rester dans l'entreprise, mais il va s'user et perdre de sa valeur (comme la cote Argus d'une voiture). Cette perte de valeur annuelle s'appelle une <strong>annuité d'amortissement</strong>.</p>
+  <ul>
+    <li><strong>L'amortissement linéaire :</strong> La perte de valeur est constante (la même somme tous les ans). <br><em>Ex : Un four à 10 000 € amorti sur 5 ans perdra 2 000 € par an.</em></li>
+    <li><strong>L'amortissement dégressif :</strong> La perte de valeur est plus forte les premières années. C'est intéressant fiscalement, car cela augmente tes charges rapidement et diminue donc tes impôts au début de ton investissement !</li>
+    <li><strong>L'amortissement par unités d'œuvre :</strong> L'usure dépend de l'utilisation réelle (ex: les kilomètres parcourus par la camionnette).</li>
+  </ul>
+
+  <h2>2. Le Financement : Les Emprunts Indivis</h2>
+  <p>Pour acheter ces machines, tu vas souvent voir ton banquier. L'emprunt classique donne lieu au paiement d'une somme annuelle (l'annuité) qui se décompose en deux parties :</p>
+  <div class="formula-box">Annuité = Remboursement du Capital (Amortissement financier) + Le loyer de l'argent (Les Intérêts)</div>
+  <p>Soit tu rembourses exactement la même somme tous les ans (<strong>Annuités constantes</strong>, le plus fréquent), soit tu rembourses le capital de manière parfaitement lisse (<strong>Amortissements constants</strong>).</p>
+
+  <h2>3. La Rentabilité : FNT et VAN</h2>
+  <p>C'est ici qu'on fait les vrais choix de patron. Une nouvelle machine va te coûter de l'argent, mais va aussi te permettre de produire plus (donc de vendre plus). L'objectif est de mesurer le <strong>Flux Net de Trésorerie (FNT)</strong> que ce projet génère chaque année :</p>
+  <div class="concept-box">
+    <strong>Le calcul du FNT :</strong><br>
+    Chiffre d'Affaires supplémentaire<br>
+    - Charges supplémentaires<br>
+    - Dotations aux amortissements de la machine<br>
+    - Intérêts de l'emprunt<br>
+    = Résultat avant impôt<br>
+    - Impôt sur les bénéfices<br>
+    = Résultat Net<br>
+    + Dotations aux amortissements (car ce n'est pas une vraie sortie d'argent)<br>
+    - Remboursement du capital de l'emprunt (car ça, c'est une vraie sortie d'argent)<br>
+    <strong>= Flux Net de Trésorerie (FNT)</strong>
+  </div>
+
+  <p>Enfin, parce qu'un euro d'aujourd'hui ne vaut pas un euro de demain, on actualise ces flux. En soustrayant le prix de la machine à la somme de ces flux actualisés, on obtient la <strong>Valeur Actuelle Nette (VAN)</strong>. Si la VAN est positive, le projet est rentable. Marche ou crêpes !</p>
+
+  <div class="certif-box">
+    <strong>✅ Exactitude Pédagogique Certifiée :</strong> La distinction entre l'amortissement comptable (usure du bien) et l'amortissement financier (remboursement du capital d'un emprunt) est vitale en analyse de projet.<br><br>
+    <em>Auto-critique : Le calcul exact de la VAN demande d'actualiser les flux un par un avec un taux de rejet. Bien que ce calcul mathématique soit lourd, la logique reste simple : si ce que la machine te rapporte (cash réel) dépasse ce qu'elle t'a coûté au départ, fonce ! C'est ce principe de discernement que le BM Boulanger doit acquérir pour ne pas s'endetter sur du matériel "gadget" qui ne rapporte aucun client supplémentaire.</em>
+  </div>
+
+  <h2>À toi de jouer : Le Banquier du Fournil</h2>
+  <p>Prouve que tes choix de chef d'entreprise sont rentables en résolvant ces trois missions financières.</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : L'Amortissement</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : L'Emprunt</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : La VAN</button>
+    </div>
+
+    <!-- MISSION 1 : AMORTISSEMENT -->
+    <div id="mission1" class="mission-content active">
+      <h3>Le nouveau Four à Sole (Les Bases)</h3>
+      <p>Tu achètes un nouveau four pour <strong>15 000 € HT</strong> le 1er Janvier de l'année N. La durée d'utilisation prévue est de <strong>5 ans</strong>. Tu choisis l'amortissement <strong>linéaire</strong>.</p>
+      
+      <div class="input-group">
+        <label>1. Quel est le taux d'amortissement linéaire ? (%)<br><span style="font-size: 0.8em; font-weight: normal;">(100 / Durée de vie)</span></label>
+        <input type="number" id="m1_taux" placeholder="Ex: 10">
+      </div>
+      <div class="input-group">
+        <label>2. Quel sera le montant de la première annuité ? (€)<br><span style="font-size: 0.8em; font-weight: normal;">(Valeur d'origine × Taux)</span></label>
+        <input type="number" id="m1_annuite" placeholder="Ex: 2000">
+      </div>
+      <div class="input-group">
+        <label>3. Quelle sera la Valeur Nette Comptable (VNC) à la fin de l'année 1 ? (€)<br><span style="font-size: 0.8em; font-weight: normal;">(Valeur d'origine - Annuité)</span></label>
+        <input type="number" id="m1_vnc" placeholder="Ex: 8000">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider l'amortissement</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 2 : EMPRUNT -->
+    <div id="mission2" class="mission-content">
+      <h3>La Vitrine Réfrigérée (Maîtrise)</h3>
+      <p>Tu as emprunté <strong>10 000 €</strong> à la banque pour refaire ta vitrine. La banque t'accorde un prêt sur <strong>4 ans</strong> avec un remboursement par <strong>amortissements constants</strong> (le capital remboursé est identique chaque année). Le taux d'intérêt est de <strong>5 %</strong>.</p>
+      
+      <div class="input-group">
+        <label>1. Quel est le montant de l'amortissement en capital chaque année ? (€)<br><span style="font-size: 0.8em; font-weight: normal;">(Capital / Durée)</span></label>
+        <input type="number" id="m2_amort" placeholder="Ex: 2000">
+      </div>
+      <div class="input-group">
+        <label>2. Quel est le montant des intérêts la 1ère année ? (€)<br><span style="font-size: 0.8em; font-weight: normal;">(Capital restant dû la 1ère année × Taux)</span></label>
+        <input type="number" id="m2_int" placeholder="Ex: 200">
+      </div>
+      <div class="input-group">
+        <label>3. Quel est le montant total de la 1ère Annuité à payer à la banque ? (€)<br><span style="font-size: 0.8em; font-weight: normal;">(Amortissement + Intérêts)</span></label>
+        <input type="number" id="m2_ann" placeholder="Ex: 2200">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Valider le remboursement</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 3 : VAN -->
+    <div id="mission3" class="mission-content">
+      <h3>La Façonneuse Magique (Expert)</h3>
+      <p>Une nouvelle façonneuse coûte <strong>30 000 €</strong> à l'achat. Grâce au gain de temps, elle va te permettre de dégager des Flux Nets de Trésorerie (FNT) sur 4 ans. L'actualisation (qui tient compte du temps qui passe) donne une somme des FNT actualisés de <strong>35 000 €</strong>.</p>
+      
+      <div class="input-group">
+        <label>Calcule la Valeur Actuelle Nette (VAN) :<br><span style="font-size: 0.8em; font-weight: normal;">(Somme des FNT actualisés - Montant de l'investissement initial)</span></label>
+        <input type="number" id="m3_van" placeholder="Ex: 2000">
+      </div>
+      <div class="input-group">
+        <label>Si la VAN est positive, le projet est-il rentable ?<br><span style="font-size: 0.8em; font-weight: normal;">(1 = Oui, 0 = Non)</span></label>
+        <input type="number" id="m3_rentable" placeholder="Tape 1 ou 0">
+      </div>
+      <button class="check-btn" onclick="checkMission3()">Valider l'investissement</button>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- SECTION QUIZ INTERACTIF -->
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>Lors du calcul du FNT (Flux Net de Trésorerie), pourquoi ajoute-t-on la "Dotation aux amortissements" au Résultat Net, alors qu'on l'avait soustraite juste avant pour calculer l'impôt ?</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong1', this)">A. C'est une erreur comptable, il ne faut jamais additionner une dotation.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">B. Parce que l'amortissement est une charge calculée (la perte de valeur du four) mais ce n'est pas de l'argent "réel" qui sort de ta poche ! Il faut le réintégrer pour voir ton vrai cash disponible.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong2', this)">C. Parce que l'État rembourse les dotations sous forme de subventions.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const taux = parseFloat(document.getElementById('m1_taux').value);
+      const annuite = parseFloat(document.getElementById('m1_annuite').value);
+      const vnc = parseFloat(document.getElementById('m1_vnc').value);
+      const fb = document.getElementById('fb_m1');
+      
+      if (taux === 20 && annuite === 3000 && vnc === 12000) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est une cuisson parfaite ! Un taux à 20% (100/5), une usure de 3 000 € par an, ce qui donne un four d'une valeur comptable de 12 000 € à la fin de la première année.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton calcul manque de précision. Taux = 100 / 5. Annuité = 15 000 × Taux. VNC = 15 000 - Annuité.";
+      }
+    }
+
+    function checkMission2() {
+      const amort = parseFloat(document.getElementById('m2_amort').value);
+      const int = parseFloat(document.getElementById('m2_int').value);
+      const ann = parseFloat(document.getElementById('m2_ann').value);
+      const fb = document.getElementById('fb_m2');
+      
+      if (amort === 2500 && int === 500 && ann === 3000) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Très bien calculé ! Tu vas rembourser 2 500 € de capital pur chaque année. La première année, tu devras rajouter les 5% d'intérêts sur les 10 000 € empruntés (500 €), soit un gros chèque de 3 000 € à la banque.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Attention au taux ! Amortissement = 10 000 / 4. Intérêts = 10 000 × 0.05. Annuité = la somme des deux.";
+      }
+    }
+
+    function checkMission3() {
+      const van = parseFloat(document.getElementById('m3_van').value);
+      const rent = parseInt(document.getElementById('m3_rentable').value);
+      const fb = document.getElementById('fb_m3');
+      
+      if (van === 5000 && rent === 1) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Le verdict est sans appel ! La VAN est de + 5 000 €. Le projet va donc te rapporter plus que ce qu'il a coûté, tout en tenant compte de la valeur du temps. Tu peux signer le bon de commande !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ C'est un calcul d'expert, accroche-toi. Fais simplement la soustraction : 35 000 - 30 000. Si le chiffre est supérieur à zéro, c'est rentable (1) !";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Exactement ! C'est la subtilité de la gestion financière. L'usure comptable n'est pas un chèque que tu fais à quelqu'un. On la compte pour baisser l'impôt (légalement), puis on la rajoute pour voir combien d'argent reste réellement sur ton compte en banque !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Faux ! L'amortissement n'est jamais remboursé par l'État, et ce n'est pas une erreur. C'est simplement une perte de valeur théorique (le four vieillit), pas une facture que tu as payée avec la carte de la boulangerie.";
+      }
+    }
+  </script>
+
+</body>
+</html>

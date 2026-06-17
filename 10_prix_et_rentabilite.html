@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 10 : Le prix des produits et la rentabilité</title>
+<style>
+  :root {
+    --primary: #E74C3C; /* Rouge passion/rentabilité */
+    --secondary: #2C3E50; /* Bleu sombre */
+    --accent: #F1C40F; /* Jaune doré */
+    --dark: #1A252F;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #C0392B;
+    --purple: #8E44AD;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header, .nav-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .nav-footer {
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--accent);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .concept-box {
+    background-color: #FEF9E7;
+    border-left: 6px solid var(--accent);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .formula-box {
+    background: #EBF5FB;
+    border: 2px dashed var(--secondary);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 15px 0;
+    color: var(--dark);
+    font-weight: bold;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--primary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn, button.quick-btn {
+    background-color: var(--accent);
+    color: var(--secondary);
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.quick-btn {
+    width: auto;
+    margin-right: 10px;
+    background-color: var(--dark);
+    color: white;
+  }
+  button.check-btn:hover {
+    background-color: #F39C12;
+  }
+  button.quick-btn:hover {
+    background-color: var(--secondary);
+  }
+  button.check-btn:active, button.quick-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  .footer-credit {
+    text-align: center;
+    color: #95a5a6;
+    font-size: 0.85em;
+    margin-top: 50px;
+    border-top: 1px dashed #bdc3c7;
+    padding-top: 15px;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 10 : Le prix des produits et la rentabilité
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>C'est l'heure de vérité. Tu as imaginé une nouvelle pâtisserie exceptionnelle : "Le Paris-Chartres". Mais à quel prix dois-tu l'afficher en vitrine pour gagner de l'argent ? Fixer un prix au hasard en regardant ce que fait le concurrent est la meilleure façon de couler la boutique. Tu dois connaître sur le bout des doigts ton <strong>Coût de Revient</strong> et ton <strong>Seuil de Rentabilité</strong>.</p>
+
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto">
+      <rect width="800" height="350" fill="#FEF9E7" rx="15"/>
+      <text x="400" y="40" font-family="'Arial Black'" font-size="22" fill="#2C3E50" text-anchor="middle">L'ANATOMIE D'UN PRIX DE VENTE</text>
+      
+      <g transform="translate(350, 150)">
+        <ellipse cx="50" cy="80" rx="90" ry="25" fill="#BDC3C7"/>
+        <path d="M -10 60 C -10 0, 110 0, 110 60 Z" fill="#D35400"/>
+        <path d="M -10 60 C -10 80, 110 80, 110 60 Z" fill="#E67E22"/>
+        <path d="M 0 50 Q 50 20 100 50" fill="none" stroke="#F1C40F" stroke-width="8" stroke-linecap="round"/>
+        <rect x="70" y="-30" width="60" height="40" fill="#E74C3C" rx="5" transform="rotate(15 70 -30)"/>
+        <text x="100" y="-5" fill="#FFF" font-weight="bold" font-size="18" transform="rotate(15 70 -30)" text-anchor="middle">4,50 €</text>
+      </g>
+
+      <line x1="220" y1="120" x2="350" y2="180" stroke="#2980B9" stroke-width="4" marker-start="url(#dot)"/>
+      <rect x="50" y="80" width="160" height="60" fill="#2980B9" rx="8"/>
+      <text x="130" y="105" fill="#FFF" font-weight="bold" text-anchor="middle">CHARGES DIRECTES</text>
+      <text x="130" y="125" fill="#FFF" font-size="12" text-anchor="middle">(Farine, Beurre, Temps Tourier)</text>
+
+      <line x1="220" y1="280" x2="360" y2="230" stroke="#8E44AD" stroke-width="4" marker-start="url(#dot)"/>
+      <rect x="50" y="250" width="160" height="60" fill="#8E44AD" rx="8"/>
+      <text x="130" y="275" fill="#FFF" font-weight="bold" text-anchor="middle">CHARGES INDIRECTES</text>
+      <text x="130" y="295" fill="#FFF" font-size="12" text-anchor="middle">(Loyer boutique, Assurance, EDF)</text>
+
+      <line x1="580" y1="120" x2="480" y2="180" stroke="#27AE60" stroke-width="4" marker-start="url(#dot)"/>
+      <rect x="590" y="80" width="160" height="60" fill="#27AE60" rx="8"/>
+      <text x="670" y="105" fill="#FFF" font-weight="bold" text-anchor="middle">BÉNÉFICE / MARGE</text>
+      <text x="670" y="125" fill="#FFF" font-size="12" text-anchor="middle">(Ce qui reste dans la caisse)</text>
+
+      <defs>
+        <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="5" fill="#2C3E50"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h2>1. Définir le Coût de Revient</h2>
+  <p>Le coût de revient est la somme de tout ce que t'a coûté la fabrication et la commercialisation d'un produit. Dès que tu vends un centime au-dessus de ce coût de revient, tu fais du bénéfice. Ce coût se divise en deux parties :</p>
+  
+  <ul>
+    <li><strong>Les charges directes :</strong> Elles sont directement affectées au produit. Ce sont les matières premières (farine, sucre, amandes) et la main-d'œuvre directe (le temps précis passé par ton pâtissier pour réaliser ce gâteau).</li>
+    <li><strong>Les charges indirectes :</strong> Elles concernent l'ensemble de la boulangerie (le loyer, l'assurance, le salaire du comptable). Il faut en répartir une petite "clé" sur chaque produit (par exemple, rajouter 10% de charges indirectes au coût direct).</li>
+  </ul>
+
+  <h2>2. Le Seuil de Rentabilité (Marche ou Crêpes !)</h2>
+  <p>Une fois ton prix de vente fixé, tu dois savoir <strong>combien de pâtisseries ou de baguettes</strong> tu dois vendre dans l'année pour que ton résultat soit exactement à zéro (ni perte, ni bénéfice). Ce niveau vital d'activité, c'est le <strong>Seuil de Rentabilité</strong> (en euros).</p>
+  
+  <p>Pour le calculer, l'analyse différentielle demande de séparer tes charges différemment :</p>
+  <div class="concept-box">
+    <ul>
+      <li><strong>Les Charges Fixes (CF) :</strong> Elles ne bougent pas, que tu vendes 0 ou 1000 gâteaux (le loyer, l'assurance).</li>
+      <li><strong>Les Charges Variables (CV) :</strong> Elles évoluent avec ton volume de vente (la farine, le beurre, les boîtes d'emballage).</li>
+    </ul>
+  </div>
+
+  <div class="formula-box">
+    <strong>Marge sur Coût Variable (MSCV) = Chiffre d'Affaires - Charges Variables</strong><br>
+    <em>Taux de MSCV = (MSCV / Chiffre d'Affaires) × 100</em><br><br>
+    <strong>Seuil de Rentabilité = Charges Fixes / Taux de MSCV</strong>
+  </div>
+
+  <h2>3. Le Point Mort</h2>
+  <p>Le Seuil de Rentabilité s'exprime en euros. Mais pour un BM Boulanger, il est souvent plus parlant de l'exprimer en temps : à partir de quel jour de l'année as-tu fini de payer tes charges fixes et commences-tu à générer du pur bénéfice net ? C'est le <strong>Point Mort</strong>.</p>
+  
+  <div class="formula-box">
+    <strong>Point Mort (en jours) = (Seuil de Rentabilité / Chiffre d'Affaires) × 360</strong>
+  </div>
+
+  <h2>À toi de jouer : Le Simulateur de Prix</h2>
+  <p>Fini la théorie, mets les mains dans le pétrin ! Utilise tes connaissances pour valider les prix et les objectifs commerciaux de ces trois artisans.</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : Le Coût de Revient</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : Le Seuil de Rentabilité</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : Le Point Mort</button>
+    </div>
+
+    <div id="mission1" class="mission-content active">
+      <h3>Le Paris-Chartres (Les Bases)</h3>
+      <p>Tu lances une nouvelle spécialité. Pour une plaque de <strong>10 pâtisseries</strong>, ta fiche technique indique :</p>
+      <ul>
+        <li>Coût des matières premières (pâte, crème, praliné) : <strong>8,50 €</strong> pour la plaque.</li>
+        <li>Main-d'œuvre directe (20 minutes de travail à 15 €/heure) : <strong>5,00 €</strong> pour la plaque.</li>
+        <li>Tu estimes que les <em>charges indirectes</em> (électricité, loyer) représentent <strong>20% du total des charges directes</strong>.</li>
+      </ul>
+      
+      <div class="input-group">
+        <label>1. Calcule le total des Charges Directes pour les 10 gâteaux :</label>
+        <input type="number" step="0.01" id="m1_cd" placeholder="Ex: 12.50">
+      </div>
+      <div class="input-group">
+        <label>2. Déduis le Coût de Revient TOTAL de la plaque (Directes + 20% d'indirectes) :</label>
+        <input type="number" step="0.01" id="m1_cr" placeholder="Ex: 15.00">
+      </div>
+      <div class="input-group">
+        <label>3. Quel est le Coût de Revient UNITAIRE (pour un seul gâteau) ?</label>
+        <input type="number" step="0.01" id="m1_unit" placeholder="Ex: 1.50">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider mon coût</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <div id="mission2" class="mission-content">
+      <h3>La Tarte Beauceronne (Maîtrise)</h3>
+      <p>L'entreprise TUFIX (spécialisée en tartes salées) a réalisé un chiffre d'affaires de <strong>200 000 €</strong>.</p>
+      <p>Son comptable a dressé le tableau différentiel suivant :</p>
+      <ul>
+        <li>Charges Variables totales (matières, électricité des fours) : <strong>84 000 €</strong>.</li>
+        <li>Charges Fixes totales (loyer, assurances, dotations) : <strong>43 000 €</strong>.</li>
+      </ul>
+      
+      <div class="input-group">
+        <label>1. Calcule la Marge sur Coût Variable (CA - CV) :</label>
+        <input type="number" id="m2_mscv" placeholder="Ex: 100000">
+      </div>
+      <div class="input-group">
+        <label>2. Calcule le Taux de MSCV (%) : <br><span style="font-size: 0.8em; font-weight: normal;">(MSCV / CA) × 100</span></label>
+        <input type="number" id="m2_taux" placeholder="Ex: 50">
+      </div>
+      <div class="input-group">
+        <label>3. Calcule le Seuil de Rentabilité (€) : <br><span style="font-size: 0.8em; font-weight: normal;">(Charges Fixes / Taux en décimal, ex: 0.50)</span></label>
+        <input type="number" id="m2_seuil" placeholder="Ex: 86000">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Valider mon Seuil</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <div id="mission3" class="mission-content">
+      <h3>Objectif Bénéfice ! (Expert)</h3>
+      <p>Tu reprends les données de l'entreprise TUFIX (Mission 2). Tu as calculé que son Seuil de Rentabilité était atteint avec un certain niveau de ventes. Rappel : le Chiffre d'Affaires total de l'année est de 200 000 €.</p>
+      
+      <div class="input-group">
+        <label>1. Calcule le Point Mort en jours : <br><span style="font-size: 0.8em; font-weight: normal;">(Seuil de Rentabilité Mission 2 / CA total) × 360</span></label>
+        <input type="number" step="0.1" id="m3_pm" placeholder="Ex: 180">
+      </div>
+      <div class="input-group">
+        <label>2. À quel mois civil correspond environ ce Point Mort ? <br><span style="font-size: 0.8em; font-weight: normal;">(Ex: 1 pour Janvier, 6 pour Juin, 12 pour Décembre)</span></label>
+        <input type="number" id="m3_mois" placeholder="Ex: 6">
+      </div>
+      <button class="check-btn" onclick="checkMission3()">Valider l'agenda de rentabilité</button>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>Le loyer de ta boutique à Chartres vient de subir une forte augmentation annuelle de +10%. Si tu ne changes rien à tes prix de vente ni à tes recettes de pain, que va-t-il se passer mécaniquement pour ton seuil de rentabilité ?</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong1', this)">A. Le seuil de rentabilité va baisser, je ferai des bénéfices plus tôt dans l'année.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">B. Le loyer étant une charge fixe, son augmentation fait mathématiquement augmenter le seuil de rentabilité. Il faudra vendre plus de pain pour atteindre l'équilibre.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong2', this)">C. Le loyer est une charge variable, cela ne modifie donc que la marge commerciale, mais pas le seuil de rentabilité.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+  
+  <div class="footer-credit">
+    Une idée de Emmanuel Boutée
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const cd = parseFloat(document.getElementById('m1_cd').value);
+      const cr = parseFloat(document.getElementById('m1_cr').value);
+      const unit = parseFloat(document.getElementById('m1_unit').value);
+      const fb = document.getElementById('fb_m1');
+      
+      // CD = 8.50 + 5.00 = 13.50
+      // CR = 13.50 + (13.50 * 0.20) = 13.50 + 2.70 = 16.20
+      // Unit = 16.20 / 10 = 1.62
+      
+      if (cd === 13.50 && cr === 16.20 && unit === 1.62) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est une recette parfaitement chiffrée ! Ton gâteau te coûte 1,62 € à fabriquer. Si tu le vends à 4,50 €, tu dégages une marge brute très confortable pour ton entreprise.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton calcul manque de cuisson ! Additionne les MP et la MOD pour trouver 13,50 €. Multiplie ce chiffre par 1,20 pour avoir le coût total. Puis divise par 10.";
+      }
+    }
+
+    function checkMission2() {
+      const mscv = parseFloat(document.getElementById('m2_mscv').value);
+      const taux = parseFloat(document.getElementById('m2_taux').value);
+      const seuil = parseFloat(document.getElementById('m2_seuil').value);
+      const fb = document.getElementById('fb_m2');
+      
+      // MSCV = 200000 - 84000 = 116000
+      // Taux = (116000 / 200000) * 100 = 58
+      // Seuil = 43000 / 0.58 = 74137.93 -> accept 74137 to 74138
+      
+      if (mscv === 116000 && taux === 58 && seuil >= 74137 && seuil <= 74138) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Bravo ! Le taux de Marge sur Coût Variable est de 58%. Ton Seuil de Rentabilité est de 74 138 € (arrondi). Dès que le tiroir-caisse dépasse cette somme, la boulangerie réalise du bénéfice net !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Erreur comptable. MSCV = 200000 - 84000. Le Taux est le rapport de cette MSCV sur le CA. Pour le seuil, divise tes Charges Fixes de 43 000 par le Taux décimal (ex: 0.58).";
+      }
+    }
+
+    function checkMission3() {
+      const pm = parseFloat(document.getElementById('m3_pm').value);
+      const mois = parseInt(document.getElementById('m3_mois').value);
+      const fb = document.getElementById('fb_m3');
+      
+      // PM = (74137.93 / 200000) * 360 = 133.4 jours
+      // 133 jours c'est fin avril / début mai (donc mois 5)
+      
+      if (pm >= 133 && pm <= 134 && (mois === 5 || mois === 4)) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est validé par l'expert comptable ! Le point mort est atteint vers le 133ème jour de l'année comptable (soit courant Mai). À partir de cette date, la boutique tourne intégralement au bénéfice !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Le planning dérape. Prends le Seuil de Rentabilité de la mission 2 (74 138), divise par 200 000 et multiplie par 360 jours pour trouver la date de bascule.";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est l'essence même de l'analyse financière ! Le loyer est une charge incompressible. S'il augmente, la 'montagne' des charges fixes s'élève, et tu devras piocher beaucoup plus longtemps dans tes marges variables pour l'atteindre. C'est l'alerte numéro un en gestion artisanale !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Attention ! Un loyer ne varie pas en fonction du nombre de baguettes que tu cuis, c'est donc par définition une charge FIXE. Si tes charges fixes augmentent, le sommet de la montagne est plus dur à atteindre, le seuil s'envole !";
+      }
+    }
+  </script>
+
+</body>
+</html>

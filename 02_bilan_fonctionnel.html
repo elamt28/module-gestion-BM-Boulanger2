@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 2 : L'analyse du Bilan Fonctionnel</title>
+<style>
+  :root {
+    --primary: #8E44AD;
+    --secondary: #2980B9;
+    --accent: #F39C12;
+    --dark: #2C3E50;
+    --light: #ECF0F1;
+    --success: #27AE60;
+    --danger: #C0392B;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--secondary);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .certif-box {
+    background-color: #E8F8F5;
+    border: 2px solid var(--success);
+    padding: 18px;
+    margin: 25px 0;
+    border-radius: 10px;
+  }
+  .certif-box strong {
+    color: var(--success);
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--secondary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+  }
+  th, td {
+    border: 1px solid #BDC3C7;
+    padding: 12px;
+    text-align: center;
+  }
+  th {
+    background-color: var(--secondary);
+    color: #fff;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.check-btn:hover {
+    background-color: #E67E22;
+  }
+  button.check-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  .nav-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- BOUTON RETOUR SOMMAIRE HAUT -->
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 2 : L'analyse du Bilan (Le Bilan Fonctionnel)
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Dans le chapitre précédent, nous avons pris une belle photographie du patrimoine avec le bilan comptable. Mais pour savoir si la boulangerie est vraiment en bonne santé et si tu ne risques pas de te retrouver "dans le pétrin" financièrement, il faut transformer ce document statique en un outil dynamique : <strong>le bilan fonctionnel</strong>.</p>
+  <p>Le bilan fonctionnel est construit à partir du bilan comptable. Il permet d’analyser la situation financière de l’entreprise, en mettant en avant l’origine de l’argent dont dispose l’entreprise et l’utilisation qui en est faite.</p>
+
+  <!-- ILLUSTRATION SVG 1 : CONCEPT DU BILAN FONCTIONNEL -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 400" width="100%" height="auto">
+      <defs>
+        <linearGradient id="blueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#3498DB" />
+          <stop offset="100%" stop-color="#2980B9" />
+        </linearGradient>
+        <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#F1C40F" />
+          <stop offset="100%" stop-color="#F39C12" />
+        </linearGradient>
+      </defs>
+      
+      <!-- Fond -->
+      <rect width="800" height="400" fill="#F8F9FA" rx="15"/>
+      <text x="400" y="40" font-size="24" font-weight="bold" fill="#2C3E50" text-anchor="middle">LE MÉCANISME DU BILAN FONCTIONNEL</text>
+      
+      <!-- Bloc EMPLOIS (Actifs) -->
+      <rect x="50" y="80" width="320" height="280" fill="#EBF5FB" rx="10" stroke="#3498DB" stroke-width="3"/>
+      <text x="210" y="115" font-size="20" font-weight="bold" fill="#2980B9" text-anchor="middle">EMPLOIS (Actifs)</text>
+      
+      <rect x="70" y="130" width="280" height="90" fill="url(#blueGrad)" rx="5"/>
+      <text x="210" y="170" font-size="18" font-weight="bold" fill="#FFF" text-anchor="middle">ACTIFS STABLES</text>
+      <text x="210" y="195" font-size="14" fill="#ECF0F1" text-anchor="middle">(Fours, Agencement de la boutique)</text>
+
+      <rect x="70" y="230" width="280" height="70" fill="#85C1E9" rx="5"/>
+      <text x="210" y="260" font-size="16" font-weight="bold" fill="#154360" text-anchor="middle">ACTIFS CIRCULANTS</text>
+      <text x="210" y="280" font-size="13" fill="#154360" text-anchor="middle">(Stock de farine, Créances B2B)</text>
+
+      <rect x="70" y="310" width="280" height="40" fill="#D6EAF8" rx="5"/>
+      <text x="210" y="335" font-size="14" font-weight="bold" fill="#154360" text-anchor="middle">TRÉSORERIE D'ACTIF (Banque/Caisse)</text>
+
+      <!-- Bloc RESSOURCES (Passifs) -->
+      <rect x="430" y="80" width="320" height="280" fill="#FEF9E7" rx="10" stroke="#F1C40F" stroke-width="3"/>
+      <text x="590" y="115" font-size="20" font-weight="bold" fill="#D35400" text-anchor="middle">RESSOURCES (Passifs)</text>
+
+      <rect x="450" y="130" width="280" height="120" fill="url(#orangeGrad)" rx="5"/>
+      <text x="590" y="180" font-size="18" font-weight="bold" fill="#FFF" text-anchor="middle">CAPITAUX STABLES</text>
+      <text x="590" y="205" font-size="14" fill="#FEF9E7" text-anchor="middle">(Capital, Emprunts long terme, Résultat)</text>
+
+      <rect x="450" y="260" width="280" height="50" fill="#FAD7A1" rx="5"/>
+      <text x="590" y="285" font-size="15" font-weight="bold" fill="#7E5109" text-anchor="middle">DETTES CIRCULANTES</text>
+      <text x="590" y="300" font-size="12" fill="#7E5109" text-anchor="middle">(Meunier, Sécurité Sociale)</text>
+
+      <rect x="450" y="320" width="280" height="30" fill="#FDEBD0" rx="5"/>
+      <text x="590" y="340" font-size="13" font-weight="bold" fill="#7E5109" text-anchor="middle">TRÉSO. PASSIF (Découvert)</text>
+
+      <!-- Flèche FRNG -->
+      <path d="M 440 190 Q 390 190 360 175" fill="none" stroke="#27AE60" stroke-width="4" stroke-dasharray="8,4" marker-end="url(#arrow)"/>
+      <text x="390" y="150" font-size="14" font-weight="bold" fill="#27AE60" text-anchor="middle">FRNG Finance</text>
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#27AE60" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <h2>Les 3 indicateurs vitaux du Manager Boulanger</h2>
+  <p>En boulangerie, tu ne te contentes pas d'enfourner, tu dois piloter ! Le bilan fonctionnel se lit grâce à trois indicateurs clés calculés en cascade.</p>
+
+  <h3>1. Le Fonds de Roulement Net Global (FRNG)</h3>
+  <p>Le FRNG représente la réserve d’argent que doit posséder une entreprise pour couvrir ses différents besoins financiers. En gros, tes ressources à long terme (Capitaux Stables) doivent être plus grandes que tes investissements à long terme (Actifs Stables). S'il t'en reste, c'est ton matelas de sécurité.</p>
+  <ul>
+    <li><strong>Calcul par le haut :</strong> FRNG = Capitaux stables – Actifs stables.</li>
+    <li>Si le FRNG est positif, l’entreprise est solvable, cela veut dire que l’entreprise peut payer ses dettes, car elle a une réserve d’argent.</li>
+    <li>Si le FRNG est négatif, l’entreprise n’est pas solvable. L'alerte rouge est sonnée !</li>
+  </ul>
+
+  <h3>2. Le Besoin en Fonds de Roulement (BFR)</h3>
+  <p>Le BFR représente l’argent dont l’entreprise a besoin pour financer son activité. Dans ton fournil, tu paies ton meunier pour la farine, tu stockes cette farine, tu cuis, tu vends, et parfois tu accordes un délai de paiement à la brasserie d'à côté qui t'achète du pain. Ces décalages de paiement créent un "trou" temporaire de trésorerie.</p>
+  <ul>
+    <li><strong>Le BFRE (Exploitation) :</strong> BFRE = Actifs circulants d’exploitation – Dettes circulantes d’exploitation. (Créances clients + Stocks - Fournisseurs).</li>
+    <li>Si le BFRE est supérieur à 0, l’entreprise a des besoins en liquidités.</li>
+  </ul>
+
+  <h3>3. La Trésorerie Nette (TN)</h3>
+  <p>C'est l'argent disponible immédiatement en banque et en caisse. C'est l'indicateur final qui découle des deux autres.</p>
+  <ul>
+    <li><strong>La formule en or :</strong> TN = FRNG – BFR.</li>
+    <li>Ton FRNG (ta réserve) doit être supérieur à ton BFR (ton besoin) pour que la trésorerie nette soit positive et la situation financière saine.</li>
+  </ul>
+
+  <!-- ILLUSTRATION SVG 2 : CARTOON BFR ET TRESORERIE -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 300" width="100%" height="auto">
+      <rect width="800" height="300" fill="#FFF3E0" rx="10"/>
+      
+      <!-- Situation 1 : FRNG < BFR -->
+      <g transform="translate(50, 20)">
+        <text x="150" y="30" font-size="18" font-weight="bold" fill="#C0392B" text-anchor="middle">SITUATION CRITIQUE (TN Négative)</text>
+        <path d="M 120 180 Q 150 150 180 180 Q 150 210 120 180 Z" fill="#E74C3C" stroke="#C0392B" stroke-width="3"/>
+        <line x1="140" y1="180" x2="160" y2="180" stroke="#FFF" stroke-width="3"/>
+        <!-- Boulanger triste -->
+        <circle cx="230" cy="120" r="25" fill="#FBC531" stroke="#333" stroke-width="2"/>
+        <path d="M 215 90 C 200 50, 260 50, 245 90 Z" fill="#FFF" stroke="#333" stroke-width="2"/>
+        <path d="M 220 130 Q 230 115 240 130" fill="none" stroke="#333" stroke-width="2"/>
+        <circle cx="222" cy="115" r="2" fill="#333"/>
+        <circle cx="238" cy="115" r="2" fill="#333"/>
+        <text x="150" y="240" font-size="14" fill="#333" text-anchor="middle">FRNG insuffisant pour couvrir le BFR !</text>
+      </g>
+
+      <!-- Ligne de séparation -->
+      <line x1="400" y1="40" x2="400" y2="260" stroke="#BDC3C7" stroke-width="3" stroke-dasharray="10,5"/>
+
+      <!-- Situation 2 : FRNG > BFR -->
+      <g transform="translate(450, 20)">
+        <text x="150" y="30" font-size="18" font-weight="bold" fill="#27AE60" text-anchor="middle">SITUATION SAINE (TN Positive)</text>
+        <path d="M 120 180 C 120 130, 180 130, 180 180 C 180 230, 120 230, 120 180 Z" fill="#2ECC71" stroke="#27AE60" stroke-width="3"/>
+        <line x1="150" y1="160" x2="150" y2="200" stroke="#FFF" stroke-width="3"/>
+        <line x1="130" y1="180" x2="170" y2="180" stroke="#FFF" stroke-width="3"/>
+        <!-- Boulanger heureux -->
+        <circle cx="230" cy="120" r="25" fill="#FBC531" stroke="#333" stroke-width="2"/>
+        <path d="M 215 90 C 200 50, 260 50, 245 90 Z" fill="#FFF" stroke="#333" stroke-width="2"/>
+        <path d="M 220 125 Q 230 140 240 125" fill="none" stroke="#333" stroke-width="2"/>
+        <circle cx="222" cy="115" r="2" fill="#333"/>
+        <circle cx="238" cy="115" r="2" fill="#333"/>
+        <text x="150" y="240" font-size="14" fill="#333" text-anchor="middle">FRNG couvre le BFR. Tréso dispo !</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="certif-box">
+    <strong>✅ Exactitude Pédagogique Certifiée :</strong> La construction du bilan fonctionnel et l'articulation FRNG - BFR = TN sont les dogmes incontournables de l'analyse financière issus du PCG (Plan Comptable Général).<br><br>
+    <em>Auto-critique d'expertise : La présentation classique peut faire croire que l'entreprise contrôle toujours son BFR. Dans la réalité artisanale (Boulangerie), le BFR est souvent structurellement négatif (ou très faible) car les clients paient le pain au comptant, tandis que le meunier accorde un délai. C'est un atout majeur du métier de boulanger qu'il ne faut pas sous-estimer dans l'analyse !</em>
+  </div>
+
+  <h2>À toi de jouer : Le Manager du Fournil</h2>
+  <p>Voici les 3 missions d'analyse. Fais parler les chiffres pour trois entreprises de la région chartraine, de la petite boulangerie de quartier à la grande minoterie industrielle !</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : Les Bases</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : Maîtrise</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : Expert</button>
+    </div>
+
+    <!-- MISSION 1 : LES BASES -->
+    <div id="mission1" class="mission-content active">
+      <h3>La Boulangerie L'Éclair de Beauce</h3>
+      <p>Tu étudies le bilan fonctionnel de cette boulangerie pour un éventuel rachat. Voici les masses simplifiées :</p>
+      <ul>
+        <li>Capitaux Stables (Ressources propres + emprunt LT) : 250 000 €</li>
+        <li>Actifs Stables (Machines, agencement) : 210 000 €</li>
+        <li>Actifs Circulants d'Exploitation (Stock farine) : 15 000 €</li>
+        <li>Dettes Circulantes d'Exploitation (Dettes meunier) : 22 000 €</li>
+      </ul>
+      <div class="input-group">
+        <label>1. Calcule le FRNG (Capitaux Stables - Actifs Stables) :</label>
+        <input type="number" id="m1_frng" placeholder="Ex: 40000">
+      </div>
+      <div class="input-group">
+        <label>2. Calcule le BFRE (Actifs Circ. Exploit. - Dettes Circ. Exploit.) :</label>
+        <input type="number" id="m1_bfre" placeholder="Ex: -5000">
+      </div>
+      <div class="input-group">
+        <label>3. Déduis la Trésorerie Nette (FRNG - BFRE) :</label>
+        <input type="number" id="m1_tn" placeholder="Ex: 45000">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider le diagnostic</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 2 : MAÎTRISE -->
+    <div id="mission2" class="mission-content">
+      <h3>La Fournée Chartraine (Minoterie locale)</h3>
+      <p>Pour affiner l'analyse de cette grosse structure, tu dois calculer un ratio fondamental. Le ratio d'indépendance financière détermine l'autonomie vis-à-vis des banques. Plus ce ratio est faible, plus l'entreprise est endettée et aura du mal à emprunter. Il se calcule ainsi : <em>Ratio d’indépendance financière = Capitaux propres / Dettes financières</em>.</p>
+      <ul>
+        <li>Capitaux Propres : 450 000 €</li>
+        <li>Dettes Financières (Emprunts) : 150 000 €</li>
+      </ul>
+      <div class="input-group">
+        <label>Calcule le Ratio d'Indépendance Financière :</label>
+        <input type="number" step="0.01" id="m2_ratio" placeholder="Ex: 1.5">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Valider le ratio</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 3 : EXPERT -->
+    <div id="mission3" class="mission-content">
+      <h3>Le réseau "Beauce Moisson"</h3>
+      <p>Une PME florissante a multiplié ses points de vente. Le bilan indique un BFR positif qui explose (les besoins de trésorerie augmentent massivement). Tu es le consultant expert appelé en urgence.</p>
+      <p>Sachant que le BFR = (Stocks + Créances Clients) - Dettes Fournisseurs.</p>
+      <p>Sur quel levier <strong>prioritaire</strong> dois-tu agir immédiatement en tant que boulanger expert pour faire chuter ce besoin d'argent ?</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+        <button class="tab-btn" onclick="checkMission3(false, this)">A. Augmenter massivement le stock de matières premières (spéculation).</button>
+        <button class="tab-btn" onclick="checkMission3(false, this)">B. Payer les fournisseurs de matériel au comptant immédiatement.</button>
+        <button class="tab-btn" onclick="checkMission3(true, this)">C. Réduire les stocks dormants et négocier des délais de paiement plus longs avec les fournisseurs de matières premières.</button>
+      </div>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- SECTION QUIZ INTERACTIF -->
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>D'après nos constats, pourquoi une boulangerie artisanale classique a-t-elle souvent un BFR négatif (ce qui est une excellente chose pour la trésorerie) contrairement à une industrie ?</p>
+    
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong', this)">Parce qu'elle vend ses baguettes à perte pour attirer le client.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">Parce que les clients paient le pain au comptant tous les jours, alors que le boulanger paie son meunier à 30 jours.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <!-- BOUTON RETOUR SOMMAIRE BAS -->
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const frng = parseFloat(document.getElementById('m1_frng').value);
+      const bfre = parseFloat(document.getElementById('m1_bfre').value);
+      const tn = parseFloat(document.getElementById('m1_tn').value);
+      const fb = document.getElementById('fb_m1');
+      
+      if (frng === 40000 && bfre === -7000 && tn === 47000) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est un pétrissage parfait ! Un FRNG de 40 000€, un BFR négatif de -7 000€ (grâce au crédit fournisseur), ce qui donne une Trésorerie Nette de 47 000€. La boulangerie est ultra saine !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton calcul n'est pas encore cuit.<br> Rappel : FRNG = 250 000 - 210 000. BFRE = 15 000 - 22 000. TN = FRNG - BFRE (attention aux signes !).";
+      }
+    }
+
+    function checkMission2() {
+      const ratio = parseFloat(document.getElementById('m2_ratio').value);
+      const fb = document.getElementById('fb_m2');
+      
+      if (ratio === 3 || ratio === 3.00) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Exactement ! 450 000 / 150 000 = 3. Le ratio est supérieur à 1, ce qui prouve que l'entreprise est très peu endettée et conserve une excellente indépendance financière face aux banques.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Erreur de calcul. Il suffit de diviser les Capitaux propres par les Dettes financières (450 000 / 150 000).";
+      }
+    }
+
+    function checkMission3(isCorrect, btn) {
+      const fb = document.getElementById('fb_m3');
+      document.querySelectorAll('#mission3 .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if (isCorrect) {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Parfaitement analysé, l'Expert ! Pour diminuer le BFR (le besoin d'argent), il faut baisser les stocks inutiles (moins d'argent immobilisé) et retarder la sortie de trésorerie en négociant avec les fournisseurs.";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Attention, c'est l'inverse ! Si tu paies tout de suite ou stockes trop, tu crées un besoin de trésorerie gigantesque.";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est la réalité du métier ! Le cycle d'exploitation d'une boulangerie de détail génère du *cash* immédiatement tous les jours, alors que les matières premières se paient à terme. Le BFR est donc une ressource !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Non ! Vendre à perte est illégal et suicidaire financièrement. Repense à la vitesse d'encaissement de la baguette par rapport au délai de paiement de la facture de farine.";
+      }
+    }
+  </script>
+
+</body>
+</html>

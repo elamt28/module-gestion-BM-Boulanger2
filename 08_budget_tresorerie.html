@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 8 : Prévoir sa trésorerie</title>
+<style>
+  :root {
+    --primary: #2980B9; /* Bleu Trésorerie */
+    --secondary: #2C3E50; /* Bleu sombre */
+    --accent: #27AE60; /* Vert Encaissement */
+    --dark: #1A252F;
+    --light: #FDFEFE;
+    --danger: #C0392B; /* Rouge Décaissement */
+    --highlight: #F1C40F;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header, .nav-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .nav-footer {
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--highlight);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .concept-box {
+    background-color: #EBF5FB;
+    border-left: 6px solid var(--primary);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .certif-box {
+    background-color: #E8F8F5;
+    border: 2px solid var(--accent);
+    padding: 18px;
+    margin: 25px 0;
+    border-radius: 10px;
+  }
+  .formula-box {
+    background: #FEF9E7;
+    border: 2px dashed var(--highlight);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 15px 0;
+    color: var(--dark);
+    font-weight: bold;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--primary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn, button.quick-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.quick-btn {
+    width: auto;
+    margin-right: 10px;
+    background-color: var(--dark);
+  }
+  button.check-btn:hover {
+    background-color: #2471A3;
+  }
+  button.quick-btn:hover {
+    background-color: var(--secondary);
+  }
+  button.check-btn:active, button.quick-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 8 : Prévoir sa trésorerie
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Une boulangerie peut être très rentable sur le papier (faire un gros bénéfice) et pourtant faire faillite ! Pourquoi ? Parce qu'elle n'a plus assez de liquidités sur son compte bancaire pour payer ses factures à la fin du mois. La trésorerie, c'est l'oxygène de ton entreprise. Pour ne pas étouffer, il faut anticiper les flux financiers avec le **Budget de Trésorerie**.</p>
+
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto">
+      <rect width="800" height="350" fill="#F4F6F6" rx="15"/>
+      
+      <rect x="300" y="80" width="200" height="220" fill="#FFF" stroke="#2C3E50" stroke-width="6" rx="10"/>
+      <path d="M 303 180 Q 350 160 400 180 Q 450 200 497 180 L 497 297 L 303 297 Z" fill="#3498DB"/>
+      <text x="400" y="250" font-family="'Arial Black'" font-size="20" fill="#FFF" text-anchor="middle">SOLDE BANCAIRE</text>
+
+      <path d="M 50 120 L 250 120 L 250 160 L 300 160" fill="none" stroke="#27AE60" stroke-width="25" stroke-linejoin="round"/>
+      <polygon points="280,140 320,160 280,180" fill="#27AE60"/>
+      <text x="150" y="100" font-weight="bold" fill="#27AE60" text-anchor="middle">ENCAISSEMENTS (+)</text>
+      <text x="150" y="150" font-size="12" fill="#2C3E50" text-anchor="middle">(Ventes au comptant, Créances réglées)</text>
+      
+      <circle cx="200" cy="120" r="6" fill="#FFF"/>
+      <circle cx="230" cy="120" r="6" fill="#FFF"/>
+
+      <path d="M 497 260 L 550 260 L 550 300 L 750 300" fill="none" stroke="#E74C3C" stroke-width="25" stroke-linejoin="round"/>
+      <polygon points="730,280 770,300 730,320" fill="#E74C3C"/>
+      <text x="650" y="280" font-weight="bold" fill="#E74C3C" text-anchor="middle">DÉCAISSEMENTS (-)</text>
+      <text x="650" y="335" font-size="12" fill="#2C3E50" text-anchor="middle">(Achats, Salaires, TVA à payer)</text>
+      
+      <circle cx="550" cy="280" r="6" fill="#FFF"/>
+      <circle cx="600" cy="300" r="6" fill="#FFF"/>
+
+      <g transform="translate(100, 180)">
+        <circle cx="50" cy="50" r="30" fill="#F1C40F" stroke="#2C3E50" stroke-width="3"/>
+        <path d="M 30 25 C 10 -20, 90 -20, 70 25 Z" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+        <rect x="35" y="18" width="30" height="10" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+        <circle cx="40" cy="45" r="4" fill="#2C3E50"/>
+        <circle cx="60" cy="45" r="4" fill="#2C3E50"/>
+        <path d="M 40 60 Q 50 70 60 60" fill="none" stroke="#2C3E50" stroke-width="3"/>
+        <path d="M 80 50 L 130 0" stroke="#F1C40F" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="140" cy="-10" r="15" fill="#E67E22" stroke="#2C3E50" stroke-width="3"/>
+      </g>
+    </svg>
+  </div>
+
+  <h2>1. Le Budget des Encaissements</h2>
+  <p>L'argent qui rentre ! Ce budget est construit à partir de tes prévisions de ventes (TTC). Mais attention au décalage dans le temps : si la boulangerie encaisse la majorité de ses clients au comptant (dans la boutique), les clients professionnels (restaurants, mairies, CFA) paient souvent avec un délai (30 ou 60 jours). L'encaissement n'a lieu que le jour où l'argent touche le compte en banque !</p>
+
+  <h2>2. Le Budget des Décaissements</h2>
+  <p>L'argent qui sort ! Il regroupe les achats de matières premières (farine, beurre), les salaires, les charges sociales, le loyer, et... le paiement de la TVA.</p>
+  
+  <div class="concept-box">
+    <strong>💡 L'Astuce de l'Artisan : Le Budget de TVA</strong><br>
+    L'entreprise est un simple collecteur d'impôts pour l'État. Chaque mois, tu dois rendre la TVA que tu as facturée à tes clients, en déduisant la TVA que tu as toi-même payée sur tes achats.
+    <div class="formula-box" style="margin-top:10px;">
+      TVA à décaisser = TVA collectée (sur tes ventes) - TVA déductible (sur tes achats et immobilisations)
+    </div>
+    <em>Attention : Si le résultat est négatif, c'est l'État qui te doit de l'argent, cela s'appelle un "Crédit de TVA".</em>
+  </div>
+
+  <h2>3. Le Budget de Trésorerie final</h2>
+  <p>C'est la synthèse des deux budgets précédents. Il te permet de calculer mois par mois ton solde bancaire prévisionnel.</p>
+  <div class="formula-box">
+    Solde Final (Fin de mois) = Solde Initial (Début de mois) + Encaissements du mois - Décaissements du mois
+  </div>
+  <p>Le solde final d'un mois devient automatiquement le solde initial du mois suivant.</p>
+
+  <div class="certif-box">
+    <strong>✅ Exactitude Pédagogique Certifiée :</strong> La mécanique des flux (Encaissements / Décaissements) et le décalage de TVA respectent strictement les principes du contrôle de gestion.<br><br>
+    <em>Auto-critique du formateur : En boulangerie, l'immense majorité des ventes se fait au comptant (TTC), ce qui est un atout formidable pour la trésorerie. Cependant, la gestion de la masse salariale (les apprentis, les vendeuses, le tourier) représente un décaissement mensuel lourd et fixe, qu'il faut absolument anticiper pour ne pas finir dans le rouge !</em>
+  </div>
+
+  <h2>À toi de jouer : Le Pilote de la Trésorerie</h2>
+  <p>Teste tes réflexes sur ces trois missions de prévision financière pour ne pas finir à découvert.</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : Encaissements</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : La TVA</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : Le Solde Global</button>
+    </div>
+
+    <div id="mission1" class="mission-content active">
+      <h3>La Flûte de Beauce (Budget des Encaissements)</h3>
+      <p>Tu as prévu de réaliser <strong>20 000 € TTC</strong> de ventes en Janvier, et <strong>18 000 € TTC</strong> en Février. Tu sais par expérience que tes clients de la boutique (comptant) représentent <strong>90 %</strong> de tes ventes. Les <strong>10 %</strong> restants sont tes livraisons au restaurant voisin, qui te paie systématiquement à 30 jours (le mois d'après).</p>
+      
+      <div class="input-group">
+        <label>1. Argent total encaissé en Janvier : <br><span style="font-size: 0.8em; font-weight: normal;">(Uniquement les ventes comptant de Janvier)</span></label>
+        <input type="number" id="m1_janv" placeholder="Ex: 15000">
+      </div>
+      <div class="input-group">
+        <label>2. Argent total encaissé en Février : <br><span style="font-size: 0.8em; font-weight: normal;">(Comptant de Février + Restaurant de Janvier)</span></label>
+        <input type="number" id="m1_fev" placeholder="Ex: 16000">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider mes encaissements</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <div id="mission2" class="mission-content">
+      <h3>Le Pétrin d'Or (Budget de TVA)</h3>
+      <p>En mars, tu as vendu beaucoup de pain et de pâtisseries. La <strong>TVA collectée</strong> sur ces ventes s'élève à <strong>1 500 €</strong>. Dans le même temps, tu as payé des factures de farine avec une <strong>TVA déductible sur achats</strong> de <strong>600 €</strong>. Enfin, tu as investi dans un nouveau batteur-mélangeur qui t'a permis de dégager une <strong>TVA déductible sur immobilisation</strong> de <strong>1 200 €</strong>.</p>
+      
+      <div class="input-group">
+        <label>Calcule le montant de ta déclaration de TVA : <br><span style="font-size: 0.8em; font-weight: normal;">(Collectée - Déductible achats - Déductible immo)</span></label>
+        <input type="number" id="m2_tva" placeholder="Ex: -500 ou 500">
+      </div>
+      <div class="input-group">
+        <label>Ce résultat est-il à payer (1) ou un crédit de TVA (2) ?</label>
+        <input type="number" id="m2_type" placeholder="Tape 1 ou 2">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Déclarer la TVA</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <div id="mission3" class="mission-content">
+      <h3>Boulangerie Saint-Sauveur (Budget de Trésorerie)</h3>
+      <p>Au 1er janvier, en arrivant à la boutique, tu consultes ton compte bancaire : le <strong>solde initial</strong> est de <strong>5 000 €</strong>. Durant tout le mois de Janvier, tu as prévu un total d'<strong>Encaissements de 25 000 €</strong>. Cependant, tu as un gros mois de charges : loyer, salaires, farine et TVA à payer te donnent un total de <strong>Décaissements de 32 000 €</strong>.</p>
+      
+      <div class="input-group">
+        <label>1. Quel sera ton Solde Final fin Janvier ?</label>
+        <input type="number" id="m3_solde" placeholder="Ex: -1000">
+      </div>
+      <div class="input-group">
+        <label>2. Quel sera par conséquent ton Solde Initial au 1er Février ?</label>
+        <input type="number" id="m3_init" placeholder="Ex: -1000">
+      </div>
+      <button class="check-btn" onclick="checkMission3()">Calculer la trésorerie</button>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>À la lecture de ton budget de trésorerie prévisionnel, tu remarques que le solde final plonge systématiquement dans le rouge (négatif) chaque milieu de mois avant de remonter. Quelle est la meilleure stratégie de gestion à adopter immédiatement ?</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong1', this)">A. Tu arrêtes de payer tes apprentis et tes salariés pour garder de la liquidité.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">B. Tu renégocies avec ton meunier pour payer ta farine à 60 jours au lieu de 30 jours, afin de retarder les décaissements.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong2', this)">C. Tu investis dans une nouvelle camionnette de livraison très chère pour essayer d'attirer de nouveaux clients.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const janv = parseFloat(document.getElementById('m1_janv').value);
+      const fev = parseFloat(document.getElementById('m1_fev').value);
+      const fb = document.getElementById('fb_m1');
+      
+      // Janvier: 20000 * 90% = 18000
+      // Février: (18000 * 90%) + (20000 * 10%) = 16200 + 2000 = 18200
+      
+      if (janv === 18000 && fev === 18200) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Parfait ! En janvier l'encaissement est de 18 000 €. En février, tu encaisses tes ventes comptant (16 200 €) PLUS la facture du restaurant du mois précédent (2 000 €), soit un total de 18 200 € !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton tiroir-caisse a un trou. Pour Janvier, prends 90% de 20 000. Pour Février, prends 90% de 18 000 ET ajoute les 10% des ventes de Janvier qui tombent enfin !";
+      }
+    }
+
+    function checkMission2() {
+      const tva = parseFloat(document.getElementById('m2_tva').value);
+      const type = parseInt(document.getElementById('m2_type').value);
+      const fb = document.getElementById('fb_m2');
+      
+      // TVA = 1500 - 600 - 1200 = -300
+      
+      if (tva === -300 && type === 2) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est validé par les impôts ! Le calcul donne un résultat négatif de -300 €. C'est donc un Crédit de TVA. Tu n'as rien à décaisser ce mois-ci, c'est l'État qui te doit de l'argent !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Erreur de déclaration. Fais : 1500 - 600 - 1200. Si le résultat est négatif (avec le signe moins), c'est un crédit de TVA (réponse 2).";
+      }
+    }
+
+    function checkMission3() {
+      const solde = parseFloat(document.getElementById('m3_solde').value);
+      const init = parseFloat(document.getElementById('m3_init').value);
+      const fb = document.getElementById('fb_m3');
+      
+      // Solde final = 5000 + 25000 - 32000 = -2000
+      
+      if (solde === -2000 && init === -2000) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Excellent calcul, mais aïe ! Ton solde plonge à -2 000 €. Tu es à découvert. Et la mécanique est implacable : le solde final de Janvier devient mathématiquement le solde initial de Février.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton bilan bancaire est faussé. Calcule 5000 + 25000 - 32000. Le solde initial du mois suivant est toujours strictement identique au solde final du mois qui s'achève !";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est la bonne réaction de manager ! Retarder légalement un décaissement (comme le paiement d'un fournisseur) permet de conserver de la liquidité sur ton compte plus longtemps, le temps que tes propres clients te paient.";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Mauvaise idée ! Ne pas payer les salaires est illégal (et détruit ton équipe). Quant à l'investissement massif alors que tu as déjà des problèmes de trésorerie à court terme, c'est la faillite assurée !";
+      }
+    }
+  </script>
+
+</body>
+</html>

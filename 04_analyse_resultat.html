@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 4 : L'Analyse du Compte de Résultat (SIG et CAF)</title>
+<style>
+  :root {
+    --primary: #D35400;
+    --secondary: #2980B9;
+    --accent: #F1C40F;
+    --dark: #2C3E50;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #C0392B;
+    --purple: #8E44AD;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--secondary);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--purple);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .concept-box {
+    background-color: #FEF9E7;
+    border-left: 6px solid var(--accent);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .certif-box {
+    background-color: #E8F8F5;
+    border: 2px solid var(--success);
+    padding: 18px;
+    margin: 25px 0;
+    border-radius: 10px;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--secondary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  .formula-box {
+    background: #f8f9fa;
+    border: 1px dashed var(--secondary);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 15px 0;
+    color: var(--dark);
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 280px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.check-btn:hover {
+    background-color: #E67E22;
+  }
+  button.check-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  .nav-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- BOUTON RETOUR SOMMAIRE HAUT -->
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 4 : Analyse du résultat, Ratios & CAF
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Maintenant que tu sais lire un compte de résultat (le baromètre global), on va passer à l'analyse au microscope. Connaître ton bénéfice final, c'est bien. Mais savoir <em>comment</em> tu as généré ce bénéfice, c'est l'apanage des vrais maîtres boulangers ! Est-ce grâce à tes pains spéciaux ? Grâce à la revente de sodas ? Ou juste parce que tu as vendu ta vieille camionnette ?</p>
+  <p>C'est ici qu'interviennent les <strong>Soldes Intermédiaires de Gestion (SIG)</strong> et la <strong>Capacité d'Autofinancement (CAF)</strong>.</p>
+
+  <!-- ILLUSTRATION SVG : LE GRAPHIQUE EN BAGUETTES -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto">
+      <rect width="800" height="350" fill="#F4F6F6" rx="10"/>
+      
+      <!-- Titre du graphique -->
+      <text x="400" y="40" font-family="'Arial Black', sans-serif" font-size="22" fill="#2C3E50" text-anchor="middle">L'ÉCHELLE DES SIG : DE LA FARINE AU BÉNÉFICE</text>
+      
+      <!-- Axes -->
+      <line x1="100" y1="300" x2="750" y2="300" stroke="#34495E" stroke-width="4" stroke-linecap="round"/>
+      <line x1="100" y1="300" x2="100" y2="70" stroke="#34495E" stroke-width="4" stroke-linecap="round"/>
+      
+      <!-- Flèche Axe Y -->
+      <polygon points="90,80 110,80 100,60" fill="#34495E"/>
+
+      <!-- Barres "Baguettes" -->
+      <!-- Marge Commerciale -->
+      <g transform="translate(150, 0)">
+        <rect x="0" y="240" width="50" height="60" fill="#F39C12" rx="10" stroke="#D35400" stroke-width="3"/>
+        <line x1="10" y1="245" x2="20" y2="295" stroke="#D35400" stroke-width="2"/>
+        <line x1="30" y1="245" x2="40" y2="295" stroke="#D35400" stroke-width="2"/>
+        <text x="25" y="325" font-size="12" font-weight="bold" fill="#2C3E50" text-anchor="middle">Marge Co.</text>
+      </g>
+
+      <!-- Production -->
+      <g transform="translate(250, 0)">
+        <rect x="0" y="150" width="50" height="150" fill="#E67E22" rx="10" stroke="#D35400" stroke-width="3"/>
+        <line x1="10" y1="160" x2="20" y2="290" stroke="#D35400" stroke-width="2"/>
+        <line x1="30" y1="160" x2="40" y2="290" stroke="#D35400" stroke-width="2"/>
+        <text x="25" y="325" font-size="12" font-weight="bold" fill="#2C3E50" text-anchor="middle">Production</text>
+      </g>
+
+      <!-- Valeur Ajoutée -->
+      <g transform="translate(350, 0)">
+        <rect x="0" y="100" width="50" height="200" fill="#D35400" rx="10" stroke="#A04000" stroke-width="3"/>
+        <text x="25" y="325" font-size="12" font-weight="bold" fill="#2C3E50" text-anchor="middle">V.A.</text>
+      </g>
+
+      <!-- EBE -->
+      <g transform="translate(450, 0)">
+        <rect x="0" y="180" width="50" height="120" fill="#27AE60" rx="5" stroke="#1E8449" stroke-width="3"/>
+        <text x="25" y="325" font-size="12" font-weight="bold" fill="#2C3E50" text-anchor="middle">EBE</text>
+      </g>
+
+      <!-- Résultat Exploit -->
+      <g transform="translate(550, 0)">
+        <rect x="0" y="210" width="50" height="90" fill="#2980B9" rx="5" stroke="#1F618D" stroke-width="3"/>
+        <text x="25" y="325" font-size="12" font-weight="bold" fill="#2C3E50" text-anchor="middle">Rés. Exploit.</text>
+      </g>
+
+      <!-- Résultat Net -->
+      <g transform="translate(650, 0)">
+        <rect x="0" y="250" width="50" height="50" fill="#8E44AD" rx="5" stroke="#6C3483" stroke-width="3"/>
+        <text x="25" y="325" font-size="12" font-weight="bold" fill="#2C3E50" text-anchor="middle">R. Net</text>
+      </g>
+
+      <!-- Ligne de tendance -->
+      <path d="M 175 240 L 275 150 L 375 100 L 475 180 L 575 210 L 675 250" fill="none" stroke="#E74C3C" stroke-width="4" stroke-dasharray="5,5"/>
+    </svg>
+  </div>
+
+  <h2>1. L'escalier de la rentabilité : Les SIG</h2>
+  <p>Les Soldes Intermédiaires de Gestion se calculent en cascade (toujours Produits - Charges). Chaque marche a une signification forte pour ton fournil :</p>
+
+  <ol>
+    <li><strong>La Marge Commerciale :</strong> Uniquement pour ton activité de "revente en l'état" (les bouteilles d'eau, les sodas, les bonbons). <br>
+    <div class="formula-box">Marge Co = Ventes de marchandises – Coût d'achat des marchandises vendues</div></li>
+    
+    <li><strong>La Production de l'Exercice :</strong> Ton activité d'artisan ! Ce que tu fabriques (pains, pâtisseries).<br>
+    <div class="formula-box">Production = Production vendue +/- Production stockée + Production immobilisée</div></li>
+
+    <li><strong>La Valeur Ajoutée (VA) :</strong> La richesse réelle créée par ta boulangerie après avoir payé tous tes fournisseurs externes (farine, EDF, assurance...).<br>
+    <div class="formula-box">VA = Marge Co + Production – Consommations en provenance des tiers</div></li>
+
+    <li><strong>L'Excédent Brut d'Exploitation (EBE) :</strong> C'est LE thermomètre de la performance de ton exploitation. C'est ce qu'il te reste après avoir payé l'État (Taxes) et tes salariés.<br>
+    <div class="formula-box">EBE = VA + Subventions – Impôts et Taxes – Charges de personnel</div></li>
+
+    <li><strong>Le Résultat d'Exploitation :</strong> L'EBE, mais on y retire l'usure des machines (les dotations aux amortissements).</li>
+    
+    <li><strong>Les autres résultats :</strong> On ajoute le Résultat Financier et le Résultat Exceptionnel, on retire l'Impôt sur les Sociétés, et on obtient le <strong>Résultat Net</strong> final !</li>
+  </ol>
+
+  <div class="certif-box">
+    <strong>✅ Validé par l'expérience terrain :</strong><br>
+    <em>Auto-critique : Il est tentant de se focaliser uniquement sur le Résultat Net. C'est une erreur de gestionnaire débutant ! Une boulangerie peut avoir un Résultat Net positif uniquement parce qu'elle a vendu les murs de l'ancien local (Résultat exceptionnel). Si l'EBE est négatif, la performance opérationnelle du fournil est mauvaise, l'entreprise est en danger !</em>
+  </div>
+
+  <h2>2. Les Ratios du Manager</h2>
+  <p>Un chiffre brut, c'est bien, un ratio pour se comparer aux boulangeries voisines, c'est mieux !</p>
+  <ul>
+    <li><strong>Croissance du CA :</strong> (CA de l'année - CA N-1) / CA N-1 x 100</li>
+    <li><strong>Taux de Marge commerciale :</strong> Marge Co / CA Ventes de marchandises x 100. (Essentiel pour voir si tu vends tes sodas avec une bonne marge).</li>
+    <li><strong>Taux de Marge Brute d'Exploitation :</strong> EBE / CA x 100. (Mesure la rentabilité pure de ton outil de travail).</li>
+  </ul>
+
+  <h2>3. La Capacité d'Autofinancement (CAF)</h2>
+  <p>C'est le nerf de la guerre. La CAF, c'est le "vrai argent" dégagé par ton activité que tu pourras utiliser pour investir (acheter une nouvelle diviseuse) ou rembourser tes emprunts bancaires.</p>
+  <p>On la calcule très souvent à partir de l'EBE (la méthode recommandée) :</p>
+  <div class="formula-box">
+    CAF = EBE <br>
+    + Encaissements divers (autres produits d'expl., financiers, exceptionnels) <br>
+    - Décaissements divers (autres charges, charges financières, impôts sur les bénéfices)
+  </div>
+  <p><em>Attention : On exclut de la CAF tout ce qui n'est pas de l'argent réel (comme les dotations aux amortissements ou les plus-values comptables) !</em></p>
+
+  <h2>À toi de jouer : Le simulateur de SIG et CAF</h2>
+  <p>Testons ta capacité d'analyse sur trois situations d'artisans proches de Chartres !</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : La Baguette Vaillante</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : Pâtisserie Brigout</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : Océan de Blé (Réseau)</button>
+    </div>
+
+    <!-- MISSION 1 : LES BASES -->
+    <div id="mission1" class="mission-content active">
+      <h3>La Baguette Vaillante (Les Bases)</h3>
+      <p>Calcule la Marge Commerciale (sur les reventes) et la Valeur Ajoutée. Voici les données :</p>
+      <ul>
+        <li>Ventes de marchandises (sodas, bonbons) : 658 230 €</li>
+        <li>Achats de marchandises : 560 400 €</li>
+        <li>Variation de stocks (marchandises) : -25 420 €</li>
+        <li>Production de l'exercice (pains) calculée : 506 250 €</li>
+        <li>Consommations en provenance des tiers (EDF, farine, assurances...) : 304 600 €</li>
+      </ul>
+      <p><em>Rappel du Coût d'achat des marchandises vendues = Achats de marchandises + Variation de stocks.</em></p>
+      
+      <div class="input-group">
+        <label>1. Calcule la Marge Commerciale :</label>
+        <input type="number" id="m1_marge" placeholder="Ex: 50000">
+      </div>
+      <div class="input-group">
+        <label>2. Calcule la Valeur Ajoutée (Marge + Prod - Tiers) :</label>
+        <input type="number" id="m1_va" placeholder="Ex: 100000">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider mes Soldes</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 2 : MAÎTRISE -->
+    <div id="mission2" class="mission-content">
+      <h3>Pâtisserie Brigout Chartres (Maîtrise)</h3>
+      <p>L'entreprise Brigout souhaite évaluer la performance brute de son équipe de pâtissiers. Calcule l'<strong>Excédent Brut d'Exploitation (EBE)</strong>.</p>
+      <ul>
+        <li>Valeur Ajoutée générée : 890 500 €</li>
+        <li>Subventions d'exploitation reçues : 12 000 €</li>
+        <li>Impôts et taxes : 95 200 €</li>
+        <li>Salaires : 375 000 €</li>
+        <li>Charges sociales patronales : 121 000 €</li>
+      </ul>
+      
+      <div class="input-group">
+        <label>Excédent Brut d'Exploitation (EBE) :</label>
+        <input type="number" id="m2_ebe" placeholder="...">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Calculer la performance</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 3 : EXPERT -->
+    <div id="mission3" class="mission-content">
+      <h3>L'Océan de Blé (Expert - La CAF)</h3>
+      <p>Ce gros réseau beauceron sort de rendez-vous avec le banquier. Tu dois calculer sa <strong>Capacité d'Autofinancement (CAF) à partir du Résultat Net</strong>, la méthode rapide, pour vérifier s'il peut rembourser son nouvel emprunt.</p>
+      <ul>
+        <li>Résultat net de l'exercice : 216 630 €</li>
+        <li>Dotations aux amortissements (Exploitation, fin., excep.) : 54 100 €</li>
+        <li>Reprises sur amortissements et provisions : 32 180 €</li>
+        <li>Valeurs comptables des éléments d'actif cédés (Charges) : 2 400 €</li>
+        <li>Produits de cession des éléments d'actif cédés (Produits) : 5 890 €</li>
+      </ul>
+      <p><em>Rappel de la formule : Résultat Net + Dotations - Reprises + Valeurs Comptables - Produits de cession.</em></p>
+      
+      <div class="input-group">
+        <label>Calcule la CAF :</label>
+        <input type="number" id="m3_caf" placeholder="...">
+      </div>
+      <button class="check-btn" onclick="checkMission3()">Valider la CAF</button>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- SECTION QUIZ INTERACTIF -->
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>Ton EBE (Excédent Brut d'Exploitation) vient de chuter lourdement cette année, alors que ton Chiffre d'Affaires a augmenté. Quelle est la cause la plus probable dans ton fournil ?</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong1', this)">A. Tes dotations aux amortissements pour ta nouvelle diviseuse sont énormes.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">B. Tu as dû sur-embaucher et payer énormément d'heures supplémentaires (masse salariale non maîtrisée).</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong2', this)">C. Les intérêts de ton prêt bancaire ont explosé.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <!-- BOUTON RETOUR SOMMAIRE BAS -->
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const marge = parseFloat(document.getElementById('m1_marge').value);
+      const va = parseFloat(document.getElementById('m1_va').value);
+      const fb = document.getElementById('fb_m1');
+      
+      // Marge Co = 658 230 - (560 400 + (-25 420)) = 658 230 - 534 980 = 123 250
+      // VA = 123 250 + 506 250 - 304 600 = 324 900
+      
+      if (marge === 123250 && va === 324900) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est une cuisson parfaite ! La Marge Commerciale est bien de 123 250 € et la Valeur Ajoutée de 324 900 €. Tu crées de la belle valeur !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Pétrissage à revoir. <br>Coût d'achat = 560 400 - 25 420 = 534 980. <br>Marge = 658 230 - 534 980.<br> VA = Marge + 506 250 - 304 600.";
+      }
+    }
+
+    function checkMission2() {
+      const ebe = parseFloat(document.getElementById('m2_ebe').value);
+      const fb = document.getElementById('fb_m2');
+      
+      // EBE = 890 500 + 12 000 - 95 200 - (375 000 + 121 000) = 311 300
+      if (ebe === 311300) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Parfait ! L'EBE est de 311 300 €. C'est une excellente performance opérationnelle avant prise en compte du matériel et des banques.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton calcul de l'EBE n'est pas bon. Formule : VA + Subventions - Impôts/Taxes - (Salaires + Charges sociales).";
+      }
+    }
+
+    function checkMission3() {
+      const caf = parseFloat(document.getElementById('m3_caf').value);
+      const fb = document.getElementById('fb_m3');
+      
+      // CAF = 216 630 + 54 100 - 32 180 + 2 400 - 5 890 = 235 060
+      if (caf === 235060) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Bravo l'expert ! La CAF est bien de 235 060 €. Le réseau a suffisamment généré de trésorerie potentielle pour rassurer le banquier.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Attention à l'application de la formule. CAF = Résultat Net + Dotations - Reprises + Valeurs Comptables (charges) - Produits de cession.";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Exactement ! L'EBE se calcule AVANT les amortissements et AVANT les intérêts financiers. Si l'EBE chute, c'est souvent un problème lié au coût du travail (salaires) ou au coût des matières premières !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Non ! Les amortissements et les intérêts bancaires interviennent *après* l'EBE (dans le résultat d'exploitation et le résultat financier). C'est donc un problème d'exploitation pure (salaires ou matières).";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Gestion Boulangerie - 200 Questions</title>
+<style>
+  :root {
+    --primary: #D35400;
+    --secondary: #2980B9;
+    --accent: #F1C40F;
+    --dark: #2C3E50;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #C0392B;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .app-container {
+    background: #fff;
+    border: 4px solid var(--primary);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 3px dashed var(--secondary);
+    padding-bottom: 15px;
+    font-size: 2em;
+  }
+  .author-tag {
+    display: block;
+    font-size: 0.5em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+    width: fit-content;
+    margin: 10px auto 0;
+    letter-spacing: 1px;
+  }
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--dark);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .question-block {
+    margin-bottom: 30px;
+    animation: fadeIn 0.4s;
+  }
+  .question-text {
+    font-size: 1.3em;
+    color: var(--secondary);
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .option-btn {
+    background-color: #ECF0F1;
+    border: 2px solid #BDC3C7;
+    padding: 15px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    text-align: left;
+    transition: all 0.2s;
+    font-family: inherit;
+    color: var(--dark);
+  }
+  .option-btn:hover:not(:disabled) {
+    background-color: #D6EAF8;
+    border-color: var(--secondary);
+  }
+  .option-btn.selected {
+    background-color: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
+  }
+  .option-btn.correct {
+    background-color: var(--success);
+    color: white;
+    border-color: var(--success);
+  }
+  .option-btn.wrong {
+    background-color: var(--danger);
+    color: white;
+    border-color: var(--danger);
+  }
+  .option-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  .action-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+  }
+  .action-btn:hover {
+    background-color: #E67E22;
+  }
+  .action-btn:disabled {
+    background-color: #BDC3C7;
+    cursor: not-allowed;
+  }
+  .result-screen {
+    text-align: center;
+    animation: fadeIn 0.5s;
+  }
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--light);
+    border: 10px solid var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--dark);
+    margin: 20px auto;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <h1>
+    QCM Gestion d'Entreprise
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <!-- Écran d'accueil -->
+  <div id="start-screen" style="text-align: center;">
+    <p>Ce QCM génère aléatoirement 20 questions parmi une base de 200 formulations possibles.</p>
+    <p>Chaque tirage est unique ! Prêt à faire chauffer le fourneau ?</p>
+    <button class="action-btn" onclick="startQuiz()">Commencer le QCM</button>
+  </div>
+
+  <!-- Écran du Quiz -->
+  <div id="quiz-screen" style="display: none;">
+    <div class="status-bar">
+      <span id="q-counter">Question 1 / 20</span>
+      <span id="score-display">Score: 0</span>
+    </div>
+    
+    <div id="question-container" class="question-block">
+      <!-- Généré par JS -->
+    </div>
+
+    <div class="controls">
+      <button id="next-btn" class="action-btn" onclick="nextQuestion()" disabled>Question suivante ➔</button>
+    </div>
+  </div>
+
+  <!-- Écran de Résultat -->
+  <div id="result-screen" class="result-screen" style="display: none;">
+    <h2>Bilan de ta fournée !</h2>
+    <div class="score-circle" id="final-score">
+      15/20
+    </div>
+    <p id="result-message"></p>
+    <button class="action-btn" onclick="startQuiz()">Relancer un nouveau QCM (Tirage différent)</button>
+  </div>
+
+</div>
+
+<script>
+  // 1. DÉFINITION DES 40 CONCEPTS DE BASE
+  // Pour atteindre les 200 questions, le script va générer 5 formulations différentes par concept.
+  const baseConcepts = [
+    { id: 1, baseQ: "Qu'est-ce que le bilan comptable ?", opts: ["Une photographie du patrimoine à l'instant T", "Le total des ventes de l'année", "La différence entre achats et ventes", "Le budget de la trésorerie"], ans: 0 },
+    { id: 2, baseQ: "Dans le bilan, que représentent les Actifs ?", opts: ["Les biens que possède l'entreprise", "Les dettes envers les fournisseurs", "Le capital apporté", "Les impôts à payer"], ans: 0 },
+    { id: 3, baseQ: "Dans le bilan, que représentent les Passifs ?", opts: ["Les ressources et les dettes", "Le matériel de production", "Les créances clients", "L'argent en caisse"], ans: 0 },
+    { id: 4, baseQ: "Qu'est-ce qu'une immobilisation corporelle ?", opts: ["Un bien matériel qui reste plus d'un an (ex: Four)", "Un stock de farine", "Un droit au bail", "Une action en bourse"], ans: 0 },
+    { id: 5, baseQ: "Où classe-t-on le découvert bancaire dans le bilan fonctionnel ?", opts: ["Dans la Trésorerie de Passif", "Dans la Trésorerie d'Actif", "Dans les Capitaux Stables", "Dans les Actifs circulants"], ans: 0 },
+    { id: 6, baseQ: "Comment se calcule le Fonds de Roulement Net Global (FRNG) ?", opts: ["Capitaux stables - Actifs stables", "Actifs circulants - Dettes circulantes", "Produits - Charges", "Trésorerie Actif - Trésorerie Passif"], ans: 0 },
+    { id: 7, baseQ: "Que signifie un FRNG négatif ?", opts: ["L'entreprise n'est pas solvable à long terme", "L'entreprise fait un bénéfice record", "L'entreprise a trop de liquidités", "Les clients paient trop vite"], ans: 0 },
+    { id: 8, baseQ: "Comment se calcule le Besoin en Fonds de Roulement (BFR) d'exploitation ?", opts: ["Stocks + Créances clients - Dettes fournisseurs", "Emprunts - Découvert", "Capitaux propres - Actifs stables", "Ventes - Achats"], ans: 0 },
+    { id: 9, baseQ: "Quelle est la formule de la Trésorerie Nette ?", opts: ["FRNG - BFR", "BFR - FRNG", "Actif - Passif", "Capitaux propres + Dettes"], ans: 0 },
+    { id: 10, baseQ: "Que contient le compte de résultat ?", opts: ["Les charges et les produits de l'année", "Uniquement les factures non payées", "La valeur des machines", "Le capital social"], ans: 0 },
+    { id: 11, baseQ: "Quelle est la finalité du Compte de Résultat ?", opts: ["Déterminer le bénéfice ou la perte de l'exercice", "Calculer le stock d'alerte", "Évaluer le patrimoine", "Rembourser les emprunts"], ans: 0 },
+    { id: 12, baseQ: "Qu'est-ce qu'une charge d'exploitation ?", line: "Dépense courante (farine, EDF, salaires)", opts: ["Une dépense liée à l'activité courante", "Le remboursement d'un emprunt", "L'achat d'un nouveau four", "Une amende fiscale"], ans: 0 },
+    { id: 13, baseQ: "Comment calcule-t-on la Marge Commerciale ?", opts: ["Ventes de marchandises - Coût d'achat des marchandises vendues", "Production vendue - Charges fixes", "Chiffre d'affaires - Impôts", "Actif - Passif"], ans: 0 },
+    { id: 14, baseQ: "Que mesure la Valeur Ajoutée (VA) ?", opts: ["La richesse réelle créée par l'entreprise", "Le prix de vente des baguettes", "Le total des salaires payés", "Le montant de la TVA"], ans: 0 },
+    { id: 15, baseQ: "Que signifie le sigle EBE ?", opts: ["Excédent Brut d'Exploitation", "Estimation des Bénéfices de l'Entreprise", "Écart Brut Économique", "Encaissement Brut d'Exercice"], ans: 0 },
+    { id: 16, baseQ: "Qu'est-ce que la Capacité d'Autofinancement (CAF) ?", opts: ["La trésorerie potentielle générée par l'activité", "Le montant maximum qu'on peut emprunter", "Le total de la caisse en fin de journée", "Le bénéfice moins les salaires"], ans: 0 },
+    { id: 17, baseQ: "Parmi ces éléments, lequel NE fait PAS partie des charges décaissables pour la CAF ?", opts: ["Les dotations aux amortissements", "Les salaires", "L'achat de matières premières", "Les impôts"], ans: 0 },
+    { id: 18, baseQ: "Qu'est-ce que le coût de possession d'un stock ?", opts: ["Le coût lié à la conservation du stock (loyer, assurance, péremption)", "Le prix de la farine", "Le coût de la livraison", "Le salaire du livreur"], ans: 0 },
+    { id: 19, baseQ: "Qu'est-ce que le coût de passation ?", opts: ["Les frais administratifs et de traitement pour passer une commande", "Le loyer de la chambre froide", "Le prix de vente du produit", "Le coût de l'emballage"], ans: 0 },
+    { id: 20, baseQ: "Comment calcule-t-on le Stock d'Alerte ?", opts: ["Stock minimum + Stock de sécurité", "Stock maximum - Stock minimum", "Stock de sécurité x 2", "Consommation annuelle / 12"], ans: 0 },
+    { id: 21, baseQ: "Que signifie la méthode PEPS pour les stocks ?", opts: ["Premier Entré, Premier Sorti", "Prix d'Évaluation Par Semaine", "Plan d'Écoulement des Pains Spéciaux", "Produit Économique, Produit Surévalué"], ans: 0 },
+    { id: 22, baseQ: "Qu'est-ce que le CMUP ?", opts: ["Le Coût Moyen Unitaire Pondéré", "Le Coût Mensuel Usuel de Production", "Le Chiffre Moyen d'Utilisation des Pains", "La Charge Marginale Unitaire de Production"], ans: 0 },
+    { id: 23, baseQ: "En prévision des ventes, qu'est-ce que la méthode des points extrêmes ?", opts: ["Elle relie la première et la dernière année de l'historique", "Elle fait la moyenne de toutes les années", "Elle ignore les pires années", "Elle additionne les mois d'été"], ans: 0 },
+    { id: 24, baseQ: "Comment fonctionne la méthode de Mayer (doubles moyennes) ?", opts: ["On sépare l'historique en deux groupes pour calculer deux moyennes", "On multiplie les ventes par deux", "On prend le meilleur et le pire mois", "On divise le CA par les charges"], ans: 0 },
+    { id: 25, baseQ: "À quoi sert la méthode des moindres carrés ?", opts: ["À déterminer la droite de tendance la plus précise possible", "À calculer la surface de la boutique", "À évaluer la perte de farine au sol", "À trouver le stock d'alerte"], ans: 0 },
+    { id: 26, baseQ: "Si le coefficient de corrélation (r) est très proche de 1 :", opts: ["La prévision mathématique est très fiable", "Le CA est chaotique et imprévisible", "L'entreprise va faire faillite", "Les charges sont trop élevées"], ans: 0 },
+    { id: 27, baseQ: "Comment calcule-t-on la TVA à décaisser ?", opts: ["TVA collectée - TVA déductible", "TVA déductible - TVA collectée", "Chiffre d'affaires x 20%", "Achats + Ventes / TVA"], ans: 0 },
+    { id: 28, baseQ: "Qu'est-ce qu'un budget des décaissements ?", opts: ["Un tableau prévoyant toutes les sorties d'argent", "La liste des factures impayées", "Le calcul des salaires", "Le montant du découvert autorisé"], ans: 0 },
+    { id: 29, baseQ: "Si le Solde Final de trésorerie est négatif, cela signifie :", opts: ["Que l'entreprise est à découvert bancaire", "Qu'elle a fait un gros bénéfice", "Que les clients ont payé d'avance", "Que le stock est plein"], ans: 0 },
+    { id: 30, baseQ: "Qu'est-ce qu'un amortissement comptable ?", opts: ["La constatation de la perte de valeur d'une immobilisation", "Le remboursement du prêt à la banque", "La destruction d'un stock périmé", "La baisse du chiffre d'affaires"], ans: 0 },
+    { id: 31, baseQ: "Dans un emprunt, de quoi est composée l'annuité ?", opts: ["De l'amortissement du capital + des intérêts", "Uniquement des intérêts", "Uniquement du capital remboursé", "Des intérêts + de l'assurance des murs"], ans: 0 },
+    { id: 32, baseQ: "Qu'est-ce que le Flux Net de Trésorerie (FNT) d'un projet ?", opts: ["La trésorerie réelle supplémentaire générée par l'investissement", "Le prix d'achat de la machine", "Le montant de la TVA récupérée", "Le total des intérêts bancaires"], ans: 0 },
+    { id: 33, baseQ: "À quoi sert la Valeur Actuelle Nette (VAN) ?", opts: ["À déterminer si un projet d'investissement est rentable à terme", "À calculer le prix d'une baguette", "À évaluer le montant du loyer", "À calculer la paie des apprentis"], ans: 0 },
+    { id: 34, baseQ: "Une charge est dite 'Fixe' si :", opts: ["Elle ne varie pas, quel que soit le volume des ventes", "Elle change tous les mois", "Elle est payée en espèces", "Elle est remboursée par l'État"], ans: 0 },
+    { id: 35, baseQ: "La farine achetée pour faire du pain est :", opts: ["Une charge variable", "Une charge fixe", "Un produit financier", "Une charge exceptionnelle"], ans: 0 },
+    { id: 36, baseQ: "Qu'est-ce que le Seuil de Rentabilité ?", opts: ["Le Chiffre d'Affaires pour lequel le résultat est exactement à zéro", "Le maximum de ventes possibles", "Le montant du prêt bancaire", "Le nombre d'heures travaillées"], ans: 0 },
+    { id: 37, baseQ: "Quelle est la formule du Seuil de Rentabilité ?", opts: ["Charges Fixes / Taux de Marge sur Coût Variable", "Charges Variables / Charges Fixes", "Chiffre d'Affaires - Charges Variables", "Bénéfice x Taux de Marge"], ans: 0 },
+    { id: 38, baseQ: "Qu'est-ce que le Point Mort en gestion ?", opts: ["La date à laquelle le seuil de rentabilité est atteint", "Le jour de fermeture de la boutique", "Le moment où on est en rupture de stock", "La fin du remboursement du prêt"], ans: 0 },
+    { id: 39, baseQ: "Dans un tableau de bord, que représente l'ÉCART ?", opts: ["Réalisé - Prévu", "Achats - Ventes", "Prix TTC - Prix HT", "Stock final - Stock initial"], ans: 0 },
+    { id: 40, baseQ: "Pourquoi faire un tableau de bord mensuel en boulangerie ?", opts: ["Pour piloter l'activité et réagir vite face aux objectifs", "Pour l'envoyer au greffe du tribunal", "Pour décorer le bureau", "Uniquement pour calculer les impôts"], ans: 0 }
+  ];
+
+  // 2. GÉNÉRATION DES 200 QUESTIONS (Variations linguistiques)
+  const allQuestions = [];
+  const prefixes = [
+    "", 
+    "En gestion, ", 
+    "Pouvez-vous préciser : ", 
+    "D'après le cours, ", 
+    "Concernant la boulangerie, "
+  ];
+
+  baseConcepts.forEach(concept => {
+    prefixes.forEach((prefix, index) => {
+      // Pour éviter que la question soit exactement la même, on modifie un peu la casse ou on ajoute le préfixe
+      let newQ = prefix + (index > 0 ? concept.baseQ.toLowerCase() : concept.baseQ);
+      // Majuscule au début
+      newQ = newQ.charAt(0).toUpperCase() + newQ.slice(1);
+      
+      allQuestions.push({
+        conceptId: concept.id, // Utilisé pour éviter les doublons de sens
+        question: newQ,
+        options: [...concept.opts],
+        correct: concept.ans
+      });
+    });
+  });
+  // allQuestions contient maintenant 40 x 5 = 200 questions.
+
+  // 3. LOGIQUE DU QUIZ
+  let currentQuiz = [];
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let selectedOption = null;
+
+  // Algorithme de Fisher-Yates pour mélanger un tableau
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function startQuiz() {
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    
+    // Tirage de 20 questions uniques (sans doublon de conceptId)
+    shuffleArray(allQuestions);
+    currentQuiz = [];
+    const usedConcepts = new Set();
+    
+    for (let i = 0; i < allQuestions.length; i++) {
+      if (!usedConcepts.has(allQuestions[i].conceptId)) {
+        currentQuiz.push(allQuestions[i]);
+        usedConcepts.add(allQuestions[i].conceptId);
+      }
+      if (currentQuiz.length === 20) break;
+    }
+
+    score = 0;
+    currentQuestionIndex = 0;
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const qData = currentQuiz[currentQuestionIndex];
+    document.getElementById('q-counter').innerText = `Question ${currentQuestionIndex + 1} / 20`;
+    document.getElementById('score-display').innerText = `Score: ${score}`;
+    
+    const container = document.getElementById('question-container');
+    
+    // Mélange des options pour ne pas que la réponse correcte soit toujours en position 0
+    let optsWithIndex = qData.options.map((opt, i) => ({ text: opt, isCorrect: i === qData.correct }));
+    shuffleArray(optsWithIndex);
+
+    let html = `<div class="question-text">${qData.question}</div><div class="options" id="options-container">`;
+    
+    optsWithIndex.forEach((opt, index) => {
+      html += `<button class="option-btn" onclick="selectOption(this, ${opt.isCorrect})">${opt.text}</button>`;
+    });
+    
+    html += `</div>`;
+    container.innerHTML = html;
+    
+    document.getElementById('next-btn').disabled = true;
+    selectedOption = null;
+  }
+
+  function selectOption(btn, isCorrect) {
+    if (selectedOption) return; // Empêche de cliquer deux fois
+    selectedOption = btn;
+    
+    const allBtns = document.getElementById('options-container').querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true); // Désactive les autres boutons
+
+    if (isCorrect) {
+      btn.classList.add('correct');
+      score++;
+      document.getElementById('score-display').innerText = `Score: ${score}`;
+    } else {
+      btn.classList.add('wrong');
+      // Afficher la bonne réponse en vert
+      allBtns.forEach(b => {
+        // Pour retrouver le bouton correct, on regarde l'attribut onclick dans le DOM brut généré
+        if(b.getAttribute('onclick').includes('true')) {
+           b.classList.add('correct');
+        }
+      });
+    }
+    
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < 20) {
+      loadQuestion();
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+    const scoreCircle = document.getElementById('final-score');
+    scoreCircle.innerText = `${score}/20`;
+    
+    const msg = document.getElementById('result-message');
+    if (score === 20) {
+      msg.innerHTML = "Incroyable ! Tu es un Maître Boulanger de la gestion ! 🥖🏆";
+      scoreCircle.style.borderColor = "var(--success)";
+      scoreCircle.style.color = "var(--success)";
+    } else if (score >= 15) {
+      msg.innerHTML = "Très bon pétrissage ! Tes connaissances sont solides. 🥐";
+      scoreCircle.style.borderColor = "var(--secondary)";
+      scoreCircle.style.color = "var(--secondary)";
+    } else if (score >= 10) {
+      msg.innerHTML = "C'est la moyenne, mais attention à la cuisson, il faut réviser encore un peu ! 🍞";
+      scoreCircle.style.borderColor = "var(--accent)";
+      scoreCircle.style.color = "var(--accent)";
+    } else {
+      msg.innerHTML = "La pâte est retombée... Il faut absolument reprendre les bases de la gestion ! 📉";
+      scoreCircle.style.borderColor = "var(--danger)";
+      scoreCircle.style.color = "var(--danger)";
+    }
+  }
+</script>
+
+</body>
+</html>

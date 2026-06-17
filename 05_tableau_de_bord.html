@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 5 : Le Tableau de Bord</title>
+<style>
+  :root {
+    --primary: #E67E22; /* Orange boulange */
+    --secondary: #2980B9; /* Bleu pro */
+    --accent: #F1C40F; /* Jaune doré */
+    --dark: #2C3E50;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #C0392B;
+    --purple: #8E44AD;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header, .nav-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .nav-footer {
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--secondary);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--purple);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .concept-box {
+    background-color: #FEF9E7;
+    border-left: 6px solid var(--accent);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .certif-box {
+    background-color: #E8F8F5;
+    border: 2px solid var(--success);
+    padding: 18px;
+    margin: 25px 0;
+    border-radius: 10px;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--secondary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+    font-size: 0.95em;
+  }
+  th, td {
+    border: 1px solid #BDC3C7;
+    padding: 10px;
+    text-align: center;
+  }
+  th {
+    background-color: var(--secondary);
+    color: #fff;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn, button.quick-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.quick-btn {
+    width: auto;
+    margin-right: 10px;
+    background-color: var(--dark);
+  }
+  button.check-btn:hover {
+    background-color: #D35400;
+  }
+  button.quick-btn:hover {
+    background-color: var(--secondary);
+  }
+  button.check-btn:active, button.quick-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- BOUTON RETOUR SOMMAIRE HAUT -->
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 5 : Gérer et piloter la performance : le tableau de bord
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Maintenant que tu as compris les documents financiers de base, il te faut un outil pour réagir vite au quotidien. Piloter une boulangerie sans tableau de bord, c'est comme conduire ta camionnette de livraison les yeux bandés en pleine nuit dans les rues de Chartres !</p>
+
+  <!-- ILLUSTRATION SVG 1 : LE TABLEAU DE BORD DE LA CAMIONNETTE -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto">
+      <rect width="800" height="350" fill="#2C3E50" rx="15"/>
+      <!-- Volant -->
+      <path d="M 250 350 C 200 200, 600 200, 550 350" fill="none" stroke="#34495E" stroke-width="40" stroke-linecap="round"/>
+      <line x1="400" y1="350" x2="400" y2="280" stroke="#34495E" stroke-width="40"/>
+      <!-- Compteurs -->
+      <!-- Jauge Ventes -->
+      <circle cx="250" cy="180" r="80" fill="#1A252F" stroke="#BDC3C7" stroke-width="6"/>
+      <path d="M 190 220 A 70 70 0 0 1 310 220" fill="none" stroke="#27AE60" stroke-width="15"/>
+      <line x1="250" y1="180" x2="290" y2="140" stroke="#E74C3C" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="250" cy="180" r="10" fill="#ECF0F1"/>
+      <text x="250" y="260" fill="#ECF0F1" font-weight="bold" font-size="16" text-anchor="middle">Ventes (CA)</text>
+      <!-- Jauge Pertes -->
+      <circle cx="550" cy="180" r="80" fill="#1A252F" stroke="#BDC3C7" stroke-width="6"/>
+      <path d="M 490 220 A 70 70 0 0 1 610 220" fill="none" stroke="#E67E22" stroke-width="15"/>
+      <line x1="550" y1="180" x2="520" y2="130" stroke="#E74C3C" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="550" cy="180" r="10" fill="#ECF0F1"/>
+      <text x="550" y="260" fill="#ECF0F1" font-weight="bold" font-size="16" text-anchor="middle">Pertes (Invendus)</text>
+      <!-- Écran central -->
+      <rect x="350" y="80" width="100" height="60" fill="#E74C3C" rx="5"/>
+      <text x="400" y="115" fill="#FFF" font-weight="bold" font-size="18" text-anchor="middle">ALERTE</text>
+      <text x="400" y="130" fill="#FFF" font-size="12" text-anchor="middle">Rupture Farine</text>
+      <!-- Croissant posé sur le tableau de bord -->
+      <path d="M 370 260 Q 400 230 430 260 Q 400 280 370 260 Z" fill="#F1C40F" stroke="#D35400" stroke-width="3"/>
+    </svg>
+  </div>
+
+  <p>Dans ta camionnette, ton tableau de bord te donne des informations capitales : ta vitesse, le niveau d'essence, et un voyant rouge s'allume si le moteur surchauffe. En gestion, c'est la même chose ! Ton tableau de bord d'entreprise te sert à la piloter, à évaluer sa performance et à t'alerter grâce à des indicateurs clés (les fameux KPI - Key Performance Indicators).</p>
+
+  <div class="quiz-section" style="margin-top: 15px; margin-bottom: 30px;">
+    <h3 style="margin-top: 0; color: var(--secondary);">⚡ Question Rapide</h3>
+    <p>Si ton voyant "essence" s'allume dans ta camionnette, tu vas à la pompe. En gestion de boulangerie, si ton indicateur "Pertes et Invendus" passe dans le rouge en fin de journée, quelle décision immédiate peux-tu prendre pour le lendemain ?</p>
+    <button class="quick-btn" onclick="document.getElementById('resp1').style.display='block'">Voir la réponse</button>
+    <div id="resp1" class="feedback success" style="display:none; background-color: #EBF5FB; color: #2980B9; border-color: #2980B9;">
+      🎯 <strong>Réponse :</strong> Tu ajustes tes quantités de production à la baisse pour le lendemain ou tu lances une promotion de type "paniers anti-gaspi" (Too Good To Go) pour limiter la perte financière. Le tableau de bord sert exactement à ça : agir vite !
+    </div>
+  </div>
+
+  <h2>1. Quels indicateurs choisir pour une Boulangerie ?</h2>
+  <p>Pour construire un bon tableau de bord, la règle d'or est de ne pas s'y noyer. <strong>Il faut limiter le nombre d'indicateurs (pas plus de dix)</strong>. Trop d'information tue l'information. Voici les trois grandes familles :</p>
+
+  <ul>
+    <li><strong>Indicateurs de performance commerciale :</strong> Mesurent si ton offre plaît. 
+      <ul>
+        <li><em>Exemples :</em> Chiffre d'affaires journalier, ticket moyen (dépense moyenne par client), nombre de clients, ventes des nouvelles pâtisseries.</li>
+      </ul>
+    </li>
+    <li><strong>Indicateurs de performance organisationnelle :</strong> Surveillent tes équipes et la production.
+      <ul>
+        <li><em>Exemples :</em> Taux d'absentéisme, nombre d'heures supplémentaires, taux d'invendus (pertes) à la fermeture.</li>
+      </ul>
+    </li>
+    <li><strong>Indicateurs de performance financière :</strong> Évaluent la santé économique (liés au compte de résultat).
+      <ul>
+        <li><em>Exemples :</em> Marge brute sur la viennoiserie, Excédent Brut d'Exploitation (EBE), trésorerie disponible.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>2. Comment construire son Tableau de Bord ?</h2>
+  <p>La structure classique d'un tableau de bord efficace repose sur la comparaison. Il te faut :</p>
+  <ol>
+    <li>Une colonne avec les <strong>résultats réels</strong> (Réalisé).</li>
+    <li>Une colonne avec tes <strong>objectifs</strong> (Prévu).</li>
+    <li>Une colonne avec l'<strong>ÉCART</strong> (Réalisé - Prévu). C'est cet écart qui va te faire réagir !</li>
+  </ol>
+
+  <!-- ILLUSTRATION SVG 2 : LE BOULANGER QUI ANALYSE -->
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 250" width="100%" height="auto">
+      <rect width="800" height="250" fill="#E8F8F5" rx="10"/>
+      <!-- Tableau de bord affiché -->
+      <rect x="50" y="30" width="400" height="190" fill="#FFF" rx="5" stroke="#27AE60" stroke-width="4"/>
+      <line x1="50" y1="70" x2="450" y2="70" stroke="#27AE60" stroke-width="2"/>
+      <text x="80" y="60" fill="#2C3E50" font-weight="bold">KPI</text>
+      <text x="220" y="60" fill="#2C3E50" font-weight="bold">Réalisé</text>
+      <text x="320" y="60" fill="#2C3E50" font-weight="bold">Prévu</text>
+      <text x="400" y="60" fill="#2C3E50" font-weight="bold">Écart</text>
+
+      <text x="80" y="100" fill="#34495E">Ticket Moyen</text>
+      <text x="230" y="100" fill="#34495E">4,20 €</text>
+      <text x="330" y="100" fill="#34495E">5,00 €</text>
+      <rect x="380" y="85" width="60" height="20" fill="#FADBD8" rx="3"/>
+      <text x="410" y="100" fill="#C0392B" font-weight="bold" text-anchor="middle">- 0,80 €</text>
+
+      <text x="80" y="140" fill="#34495E">Pertes (Taux)</text>
+      <text x="230" y="140" fill="#34495E">12 %</text>
+      <text x="330" y="140" fill="#34495E">5 %</text>
+      <rect x="380" y="125" width="60" height="20" fill="#FADBD8" rx="3"/>
+      <text x="410" y="140" fill="#C0392B" font-weight="bold" text-anchor="middle">+ 7 %</text>
+
+      <!-- Boulanger qui transpire -->
+      <circle cx="650" cy="120" r="50" fill="#F1C40F" stroke="#2C3E50" stroke-width="3"/>
+      <!-- Toque -->
+      <path d="M 610 80 C 580 20, 720 20, 690 80 Z" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+      <rect x="620" y="70" width="60" height="15" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+      <!-- Visage inquiet -->
+      <circle cx="630" cy="110" r="6" fill="#2C3E50"/>
+      <circle cx="670" cy="110" r="6" fill="#2C3E50"/>
+      <path d="M 630 140 Q 650 120 670 140" fill="none" stroke="#2C3E50" stroke-width="4"/>
+      <!-- Goutte de sueur -->
+      <path d="M 690 100 Q 700 120 690 130 Q 680 120 690 100" fill="#3498DB"/>
+    </svg>
+  </div>
+
+  <p>Une fois les écarts calculés, le rôle du manager est de les interpréter. Pourquoi le ticket moyen a baissé ? L'équipe de vente oublie-t-elle de proposer la fameuse chouquette supplémentaire à la caisse ? Pourquoi le taux de perte a explosé de 7% ? La production a-t-elle été mal anticipée face à la météo pluvieuse d'hier ?</p>
+
+  <div class="certif-box">
+    <strong>✅ Exactitude Pédagogique Certifiée :</strong> La règle "Écart = Réalisé - Prévu" est le standard universel du contrôle de gestion.<br><br>
+    <em>Auto-critique d'expertise : Attention, un écart positif n'est pas toujours une bonne nouvelle ! Si ton indicateur est "Montant des charges", un écart positif signifie que tu as dépensé PLUS que prévu (c'est négatif pour la rentabilité). Il faut toujours analyser le sens de l'indicateur.</em>
+  </div>
+
+  <h2>À toi de jouer : Le simulateur de Tableau de Bord</h2>
+  <p>Enfile ta casquette de manager. Voici deux missions pour tester ta réactivité face aux chiffres de la boutique.</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : L'équipe de Vente</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : Suivi du Snacking</button>
+    </div>
+
+    <!-- MISSION 1 : L'EQUIPE DE VENTE -->
+    <div id="mission1" class="mission-content active">
+      <h3>Suivi des ventes : L'équipe de la boutique</h3>
+      <p>Tu as mis en place un suivi pour motiver ton équipe de vente. L'objectif journalier par vendeur est de servir <strong>150 clients</strong> et de réussir à placer une "vente additionnelle" (ex: un lot de chouquettes, une boisson) pour au moins <strong>20%</strong> de ces clients.</p>
+      
+      <p>Aujourd'hui, ton vendeur Lucas a servi <strong>165 clients</strong> et a réussi <strong>28 ventes additionnelles</strong>.</p>
+      
+      <div class="input-group">
+        <label>1. Taux de transformation réel de Lucas (%) :<br><span style="font-size: 0.8em; font-weight: normal;">(Ventes add. / Clients servis x 100 - <i>Arrondir à 1 décimale</i>)</span></label>
+        <input type="number" id="m1_taux" step="0.1" placeholder="Ex: 15.5">
+      </div>
+      <div class="input-group">
+        <label>2. L'objectif de 20% est-il atteint ? L'écart en points de % est de :<br><span style="font-size: 0.8em; font-weight: normal;">(Réalisé - Prévu)</span></label>
+        <input type="number" id="m1_ecart" step="0.1" placeholder="Ex: -2.5 ou 2.5">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Analyser la performance</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <!-- MISSION 2 : SUIVI SNACKING -->
+    <div id="mission2" class="mission-content">
+      <h3>Le rayon Snacking : Sandwichs & Salades</h3>
+      <p>Tu suis la rentabilité de ton rayon traiteur pour la semaine. Tu avais prévu de vendre pour <strong>2 500 €</strong> de formules déjeuner. À la fin de la semaine, la caisse indique un réalisé de <strong>2 150 €</strong> pour ce rayon.</p>
+      <p>Cependant, tes charges (matières premières salades/poulet) qui devaient être de <strong>750 €</strong> se sont finalement élevées à <strong>850 €</strong> (le prix du poulet a augmenté).</p>
+
+      <table>
+        <tr>
+          <th>KPI</th>
+          <th>Prévu (€)</th>
+          <th>Réalisé (€)</th>
+          <th>Écart (Réalisé - Prévu)</th>
+        </tr>
+        <tr>
+          <td>Chiffre d'Affaires Snacking</td>
+          <td>2 500</td>
+          <td>2 150</td>
+          <td><input type="number" id="m2_ecart_ca" style="width:100px;"></td>
+        </tr>
+        <tr>
+          <td>Charges Matières Premières</td>
+          <td>750</td>
+          <td>850</td>
+          <td><input type="number" id="m2_ecart_ch" style="width:100px;"></td>
+        </tr>
+      </table>
+
+      <button class="check-btn" onclick="checkMission2()">Valider mon Tableau de Bord</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+  </div>
+
+  <!-- SECTION QUIZ INTERACTIF -->
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>En analysant la Mission 2 (Snacking), quel est l'impact global sur la marge brute de ton rayon traiteur ?</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong1', this)">A. Pas d'impact, les charges ont augmenté mais c'est normal.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">B. Un double impact négatif : je vends moins que prévu ET mes matières coûtent plus cher. Ma marge s'effondre.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong2', this)">C. Un impact positif car l'écart sur les charges est de +100€.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <!-- BOUTON RETOUR SOMMAIRE BAS -->
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const taux = parseFloat(document.getElementById('m1_taux').value);
+      const ecart = parseFloat(document.getElementById('m1_ecart').value);
+      const fb = document.getElementById('fb_m1');
+      
+      // Taux = 28 / 165 * 100 = 16.9696... -> 17.0
+      // Écart = 17.0 - 20 = -3.0
+      
+      if (taux >= 16.9 && taux <= 17.0 && ecart === -3.0) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Très bonne analyse ! Le taux est d'environ 17%. L'écart est de -3%. Lucas a servi plus de clients que prévu (super !), mais il pèche sur la vente additionnelle (l'objectif de 20% n'est pas atteint). Il faut l'encourager à proposer la petite gourmandise en caisse !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton calcul n'est pas bon. Calcule : (28 divisé par 165) x 100. Puis soustrais l'objectif de 20 à ce résultat.";
+      }
+    }
+
+    function checkMission2() {
+      const ecartCA = parseFloat(document.getElementById('m2_ecart_ca').value);
+      const ecartCh = parseFloat(document.getElementById('m2_ecart_ch').value);
+      const fb = document.getElementById('fb_m2');
+      
+      // Écart CA = 2150 - 2500 = -350
+      // Écart Charges = 850 - 750 = +100
+      
+      if (ecartCA === -350 && ecartCh === 100) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est parfait ! Ton tableau de bord est juste. Tu as une alerte sur le CA (-350€) ET une alerte sur les charges (+100€). C'est le moment d'agir !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Attention à la règle d'or : ÉCART = RÉALISÉ - PRÉVU. (2150 - 2500) et (850 - 750). Fais attention aux signes !";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est l'analyse d'un vrai patron ! L'écart de +100€ sur les charges est un écart arithmétiquement positif, mais c'est une très mauvaise nouvelle pour ta rentabilité ("+ de dépenses"). Couplé à la baisse des ventes, ta marge souffre énormément. Il faut réviser le prix des formules ou changer de fournisseur de poulet !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Mauvaise pioche ! Réfléchis bien : si l'argent qui rentre (CA) diminue, et que l'argent qui sort (Charges) augmente, ton bénéfice final est attaqué des deux côtés !";
+      }
+    }
+  </script>
+
+</body>
+</html>

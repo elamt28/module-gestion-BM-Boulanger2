@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapitre 6 : Prévoir les ventes</title>
+<style>
+  :root {
+    --primary: #9B59B6; /* Violet analytique */
+    --secondary: #2C3E50; /* Bleu sombre */
+    --accent: #E67E22; /* Orange croûte de pain */
+    --dark: #1A252F;
+    --light: #FDFEFE;
+    --success: #27AE60;
+    --danger: #C0392B;
+    --highlight: #F1C40F;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header, .nav-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .nav-footer {
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--dark);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--accent);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  h2 {
+    color: var(--secondary);
+    font-size: 1.6em;
+    margin-top: 35px;
+    border-left: 5px solid var(--accent);
+    padding-left: 10px;
+  }
+  h3 {
+    color: var(--primary);
+    font-size: 1.3em;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+  .illustration-container {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .concept-box {
+    background-color: #F4F6F6;
+    border-left: 6px solid var(--primary);
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .certif-box {
+    background-color: #E8F8F5;
+    border: 2px solid var(--success);
+    padding: 18px;
+    margin: 25px 0;
+    border-radius: 10px;
+  }
+  .formula-box {
+    background: #FEF9E7;
+    border: 2px dashed var(--highlight);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.1em;
+    text-align: center;
+    margin: 15px 0;
+    color: var(--dark);
+    font-weight: bold;
+  }
+  .interactive-section, .quiz-section {
+    background-color: #fff;
+    border: 3px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 35px;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  .tab-btn {
+    background-color: #BDC3C7;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    color: #333;
+  }
+  .tab-btn.active {
+    background-color: var(--primary);
+    color: white;
+  }
+  .mission-content {
+    display: none;
+  }
+  .mission-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+  .input-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  .input-group label {
+    font-weight: bold;
+    min-width: 250px;
+  }
+  input[type="number"] {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    border-radius: 5px;
+    width: 150px;
+    font-size: 1.1em;
+    font-family: inherit;
+  }
+  button.check-btn, button.quick-btn {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-family: inherit;
+    font-weight: bold;
+    width: 100%;
+  }
+  button.quick-btn {
+    width: auto;
+    margin-right: 10px;
+    background-color: var(--dark);
+  }
+  button.check-btn:hover {
+    background-color: #D35400;
+  }
+  button.quick-btn:hover {
+    background-color: var(--secondary);
+  }
+  button.check-btn:active, button.quick-btn:active {
+    transform: scale(0.98);
+  }
+  .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.success {
+    display: block;
+    background-color: #D5F5E3;
+    color: #1E8449;
+    border-left: 5px solid #1E8449;
+  }
+  .feedback.error {
+    display: block;
+    background-color: #FADBD8;
+    color: #B03A2E;
+    border-left: 5px solid #B03A2E;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Chapitre 6 : La boule de cristal du boulanger : Prévoir les ventes
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Piloter une boulangerie sans anticiper ses ventes, c'est comme enfourner sans avoir vérifié la température : on risque la catastrophe ! Prévoir ton chiffre d'affaires te permet de dimensionner tes achats de farine, de planifier tes effectifs au CFA Interpro et d'éviter que tes vitrines ne soient vides à 16h un samedi d'affluence à Chartres.</p>
+  <p>Pourtant, le chiffre d'affaires ne progresse jamais de manière parfaitement régulière. C'est pourquoi nous allons utiliser des méthodes statistiques pour "lisser" ces variations et dessiner une **droite de tendance** mathématique absolue.</p>
+
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 350" width="100%" height="auto">
+      <rect width="800" height="350" fill="#ECF0F1" rx="15"/>
+      
+      <line x1="50" y1="300" x2="400" y2="300" stroke="#BDC3C7" stroke-width="4"/>
+      <line x1="50" y1="300" x2="50" y2="50" stroke="#BDC3C7" stroke-width="4"/>
+      <circle cx="100" cy="250" r="6" fill="#9B59B6"/>
+      <circle cx="160" cy="180" r="6" fill="#9B59B6"/>
+      <circle cx="220" cy="220" r="6" fill="#9B59B6"/>
+      <circle cx="280" cy="140" r="6" fill="#9B59B6"/>
+      <circle cx="340" cy="90" r="6" fill="#9B59B6"/>
+      <line x1="80" y1="260" x2="360" y2="70" stroke="#E67E22" stroke-width="4" stroke-dasharray="8,4"/>
+      
+      <ellipse cx="600" cy="300" rx="150" ry="30" fill="#34495E"/>
+      <polygon points="560,300 640,300 660,350 540,350" fill="#2C3E50"/>
+      
+      <circle cx="600" cy="180" r="90" fill="#8E44AD" opacity="0.2"/>
+      <circle cx="600" cy="180" r="85" fill="#9B59B6" opacity="0.4"/>
+      <path d="M 540 130 Q 600 80 660 130" fill="none" stroke="#FFF" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+      
+      <polyline points="550,220 580,180 610,200 640,140" fill="none" stroke="#F1C40F" stroke-width="6" stroke-linejoin="round"/>
+      <polygon points="640,140 630,160 650,160" fill="#F1C40F"/>
+      
+      <g transform="translate(380, 80)">
+        <circle cx="50" cy="50" r="30" fill="#F39C12"/>
+        <path d="M 30 25 C 10 -20, 90 -20, 70 25 Z" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+        <rect x="35" y="18" width="30" height="10" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+        <line x1="35" y1="45" x2="45" y2="50" stroke="#2C3E50" stroke-width="3"/>
+        <line x1="65" y1="45" x2="55" y2="50" stroke="#2C3E50" stroke-width="3"/>
+        <path d="M 20 80 L -20 180 L 120 180 L 80 80 Z" fill="#8E44AD" stroke="#2C3E50" stroke-width="3"/>
+        <path d="M -20 180 Q 50 200 120 180" fill="#9B59B6"/>
+        <path d="M 80 120 L 140 60" stroke="#E67E22" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="140" cy="60" r="8" fill="#F1C40F"/>
+      </g>
+    </svg>
+  </div>
+
+  <h2>Les 3 méthodes de modélisation mathématique</h2>
+  <p>L'objectif de ces trois méthodes est d'aboutir à la création d'une équation de type <strong>y = ax + b</strong> (une fonction affine), où "x" est l'année (le temps) et "y" est le chiffre d'affaires prévu.</p>
+
+  <h3>1. La méthode des points extrêmes</h3>
+  <p>C'est la méthode la plus rapide. On prend uniquement la première et la dernière année de notre historique (les extrémités). On ignore complètement tout ce qui s'est passé entre les deux. C'est simple, mais ça manque parfois de précision, car les variations intermédiaires sont invisibles.</p>
+  <div class="concept-box">
+    <strong>Mécanique :</strong> On obtient deux points : A (1 ; CA de l'année 1) et B (n ; CA de l'année n).<br>
+    On calcule d'abord le coefficient directeur <strong>a = (yB - yA) / (xB - xA)</strong>.<br>
+    Puis on trouve <strong>b</strong> en remplaçant "a", "x" et "y" dans l'équation.
+  </div>
+
+  <h3>2. La méthode des doubles moyennes (Méthode de Mayer)</h3>
+  <p>On coupe la poire (ou le pâton !) en deux. Si on a 8 années d'historique, on fait un Groupe 1 avec les années 1 à 4, et un Groupe 2 avec les années 5 à 8. On calcule la moyenne des "x" et des "y" pour chaque groupe. Cela nous donne deux points moyens très solides sur lesquels on trace notre droite <strong>y = ax + b</strong>.</p>
+
+  <div class="illustration-container">
+    <svg viewBox="0 0 800 200" width="100%" height="auto">
+      <rect width="800" height="200" fill="#FEF9E7" rx="10"/>
+      <path d="M 100 100 Q 150 60 250 80 Q 350 100 380 90 L 380 140 Q 250 160 100 140 Z" fill="#F39C12" stroke="#D35400" stroke-width="4"/>
+      <path d="M 420 90 Q 550 70 650 90 Q 720 110 700 140 Q 550 160 420 140 Z" fill="#F39C12" stroke="#D35400" stroke-width="4"/>
+      <line x1="400" y1="30" x2="400" y2="170" stroke="#C0392B" stroke-width="6" stroke-dasharray="10,5"/>
+      <text x="240" y="115" font-family="'Arial Black'" font-size="20" fill="#FFF" text-anchor="middle">GROUPE 1</text>
+      <text x="560" y="115" font-family="'Arial Black'" font-size="20" fill="#FFF" text-anchor="middle">GROUPE 2</text>
+      <text x="400" y="190" font-weight="bold" fill="#2C3E50" text-anchor="middle">Mayer : on fait la moyenne de chaque moitié pour gommer les irrégularités !</text>
+    </svg>
+  </div>
+
+  <h3>3. La méthode des moindres carrés</h3>
+  <p>C'est la balance de précision de l'expert comptable. Elle utilise la totalité de l'historique pour trouver la droite parfaite qui passe au plus près de chaque point. C'est la méthode la plus fiable, indispensable pour convaincre un banquier.</p>
+  <div class="formula-box">
+    a = Somme des [ (xi - x_moyen) × (yi - y_moyen) ] / Somme des [ (xi - x_moyen)² ]<br>
+    b = y_moyen - (a × x_moyen)
+  </div>
+
+  <h3>Le coefficient de corrélation (r)</h3>
+  <p>Une fois ta droite tracée, il faut savoir si tu as le droit de t'y fier ! Le coefficient de corrélation "r" est un chiffre compris entre -1 et 1. Plus il est proche de 1 (ou -1), plus la corrélation est forte, et plus ta prévision a des chances de se réaliser. S'il est proche de 0, ton chiffre d'affaires est aléatoire, la méthode n'est pas applicable.</p>
+
+  <div class="certif-box">
+    <strong>✅ Exactitude Pédagogique Certifiée :</strong> Les trois formules mathématiques de régression linéaire sont indéniablement conformes aux enseignements stricts du contrôle de gestion.<br><br>
+    <em>Auto-critique de la logique : La modélisation linéaire brute (y = ax+b) suppose une activité qui lisse sa progression de manière constante. Or, la réalité d'un BM Boulanger est profondément dictée par la météo, les vacances scolaires et la saisonnalité (période de la galette des rois en janvier, baisse de régime en août...). Bien que ces méthodes fixent le "trend" (la tendance de fond) sur plusieurs années, elles nécessitent d'être impérativement couplées à des "coefficients saisonniers" mensuels pour le pilotage fin de la production au quotidien, sous peine de se retrouver sous une avalanche de pains invendus !</em>
+  </div>
+
+  <h2>À toi de jouer : La boule de cristal interactive !</h2>
+  <p>Enfile ton tablier d'expert en statistiques et prédis l'avenir de ces trois boulangeries selon la méthode imposée.</p>
+
+  <div class="interactive-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('mission1')">Mission 1 : Points Extrêmes</button>
+      <button class="tab-btn" onclick="showTab('mission2')">Mission 2 : Double Moyenne</button>
+      <button class="tab-btn" onclick="showTab('mission3')">Mission 3 : L'Expertise</button>
+    </div>
+
+    <div id="mission1" class="mission-content active">
+      <h3>Le Fournil de Beauce (Points Extrêmes)</h3>
+      <p>Tu analyses l'historique du CA sur 5 ans :</p>
+      <ul>
+        <li>Année 1 : 120 000 €</li>
+        <li>Année 2 : 115 000 €</li>
+        <li>Année 3 : 130 000 €</li>
+        <li>Année 4 : 145 000 €</li>
+        <li>Année 5 : 160 000 €</li>
+      </ul>
+      <p>Utilise <strong>uniquement</strong> le point A (Année 1) et le point B (Année 5).</p>
+      
+      <div class="input-group">
+        <label>1. Trouve le coefficient "a" : <br><span style="font-size: 0.8em; font-weight: normal;">(yB - yA) / (xB - xA)</span></label>
+        <input type="number" id="m1_a" placeholder="Ex: 5000">
+      </div>
+      <div class="input-group">
+        <label>2. Déduis "b" : <br><span style="font-size: 0.8em; font-weight: normal;">b = yA - (a × xA)</span></label>
+        <input type="number" id="m1_b" placeholder="Ex: 80000">
+      </div>
+      <div class="input-group">
+        <label>3. Prévision Année 6 (y = a×6 + b) :</label>
+        <input type="number" id="m1_prev" placeholder="Ex: 150000">
+      </div>
+      <button class="check-btn" onclick="checkMission1()">Valider ma prévision</button>
+      <div id="fb_m1" class="feedback"></div>
+    </div>
+
+    <div id="mission2" class="mission-content">
+      <h3>La Baguette Magique (Méthode de Mayer)</h3>
+      <p>Découpe cet historique de 4 ans en deux groupes égaux pour lisser les résultats.</p>
+      <ul>
+        <li><strong>Groupe 1 :</strong> Année 1 = 100 000 € | Année 2 = 120 000 €</li>
+        <li><strong>Groupe 2 :</strong> Année 3 = 150 000 € | Année 4 = 170 000 €</li>
+      </ul>
+      <p><em>Indications :</em> Le Groupe 1 te donne un point moyen M1 (x=1.5 ; y=110 000). Le Groupe 2 te donne un point moyen M2 (x=3.5 ; y=160 000).</p>
+      
+      <div class="input-group">
+        <label>1. Trouve le coefficient "a" entre M1 et M2 :</label>
+        <input type="number" id="m2_a" placeholder="Ex: 15000">
+      </div>
+      <div class="input-group">
+        <label>2. Déduis "b" (avec M1 : b = 110000 - a×1.5) :</label>
+        <input type="number" id="m2_b" placeholder="Ex: 50000">
+      </div>
+      <div class="input-group">
+        <label>3. Prévision Année 5 (y = a×5 + b) :</label>
+        <input type="number" id="m2_prev" placeholder="Ex: 180000">
+      </div>
+      <button class="check-btn" onclick="checkMission2()">Valider ma prévision</button>
+      <div id="fb_m2" class="feedback"></div>
+    </div>
+
+    <div id="mission3" class="mission-content">
+      <h3>La Pâtisserie de l'Eure (Moindres Carrés)</h3>
+      <p>Pour cette mission d'expertise, le tableur a déjà pré-calculé les sommes fastidieuses de la méthode des moindres carrés sur 5 ans d'activité.</p>
+      <ul>
+        <li>Moyenne des années (x_moyen) = 3</li>
+        <li>Moyenne des CA (y_moyen) = 200 000 €</li>
+        <li>Somme des [ (xi - x_moyen) × (yi - y_moyen) ] = 150 000</li>
+        <li>Somme des [ (xi - x_moyen)² ] = 10</li>
+      </ul>
+      
+      <div class="input-group">
+        <label>1. Trouve "a" (Somme des écarts produits / Somme des écarts au carré) :</label>
+        <input type="number" id="m3_a" placeholder="Ex: 12000">
+      </div>
+      <div class="input-group">
+        <label>2. Trouve "b" (y_moyen - a × x_moyen) :</label>
+        <input type="number" id="m3_b" placeholder="Ex: 150000">
+      </div>
+      <div class="input-group">
+        <label>3. Prévision Année 6 (y = a×6 + b) :</label>
+        <input type="number" id="m3_prev" placeholder="Ex: 220000">
+      </div>
+      <button class="check-btn" onclick="checkMission3()">Valider la droite parfaite</button>
+      <div id="fb_m3" class="feedback"></div>
+    </div>
+  </div>
+
+  <div class="quiz-section">
+    <h3 style="margin-top: 0;">🧠 Question d'auto-évaluation</h3>
+    <p>Le CFA Interpro de Chartres calcule la tendance d'une boulangerie avec les moindres carrés. Le coefficient de corrélation (r) obtenu est de <strong>0,98</strong>. Qu'est-ce que cela signifie concrètement pour le gérant ?</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong1', this)">A. Le chiffre d'affaires est totalement imprévisible et chaotique.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('right', this)">B. Il y a une corrélation très forte, la prévision calculée est extrêmement fiable.</button>
+      <button class="tab-btn" onclick="checkFinalQuiz('wrong2', this)">C. Il y a 98% de chances que l'entreprise fasse faillite l'année prochaine.</button>
+    </div>
+    
+    <div id="feedbackQuiz" class="feedback"></div>
+  </div>
+
+  <div class="nav-footer">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.mission-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tabs .tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function checkMission1() {
+      const a = parseFloat(document.getElementById('m1_a').value);
+      const b = parseFloat(document.getElementById('m1_b').value);
+      const prev = parseFloat(document.getElementById('m1_prev').value);
+      const fb = document.getElementById('fb_m1');
+      
+      // a = (160000 - 120000) / (5 - 1) = 40000 / 4 = 10000
+      // b = 120000 - 10000*1 = 110000
+      // prev = 10000*6 + 110000 = 170000
+      
+      if (a === 10000 && b === 110000 && prev === 170000) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est une belle levée de pâte ! Avec la méthode des points extrêmes, l'équation est y = 10000x + 110000, prédisant un CA de 170 000 € pour l'année 6.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Ton calcul manque de cuisson ! Vérifie 'a' : 40000 / 4. Vérifie 'b' : 120000 - (a*1). Puis remplace x par 6.";
+      }
+    }
+
+    function checkMission2() {
+      const a = parseFloat(document.getElementById('m2_a').value);
+      const b = parseFloat(document.getElementById('m2_b').value);
+      const prev = parseFloat(document.getElementById('m2_prev').value);
+      const fb = document.getElementById('fb_m2');
+      
+      // a = (160000 - 110000) / (3.5 - 1.5) = 50000 / 2 = 25000
+      // b = 110000 - 25000*1.5 = 110000 - 37500 = 72500
+      // prev = 25000*5 + 72500 = 197500
+      
+      if (a === 25000 && b === 72500 && prev === 197500) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Parfaitement tranché ! L'équation de Mayer donne y = 25000x + 72500, pour une prévision ultra précise de 197 500 € l'année 5.";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Il y a un grumeau dans le calcul. Pour 'a' fait : (160000 - 110000) divisé par (3.5 - 1.5). Et n'oublie pas de remplacer x par 5 pour la prévision.";
+      }
+    }
+
+    function checkMission3() {
+      const a = parseFloat(document.getElementById('m3_a').value);
+      const b = parseFloat(document.getElementById('m3_b').value);
+      const prev = parseFloat(document.getElementById('m3_prev').value);
+      const fb = document.getElementById('fb_m3');
+      
+      // a = 150000 / 10 = 15000
+      // b = 200000 - (15000 * 3) = 155000
+      // prev = 15000 * 6 + 155000 = 245000
+      
+      if (a === 15000 && b === 155000 && prev === 245000) {
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 C'est la perfection statistique ! L'équation est y = 15000x + 155000. L'année 6 rapportera 245 000 €. Tu peux aller voir ton banquier les yeux fermés !";
+      } else {
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Attention à l'application de la formule. 'a' est la division des sommes (150000 / 10). 'b' utilise les moyennes (200000 - a*3). Re-calcule !";
+      }
+    }
+
+    function checkFinalQuiz(answer, btn) {
+      const fb = document.getElementById('feedbackQuiz');
+      document.querySelectorAll('.quiz-section .tab-btn').forEach(b => b.style.backgroundColor = '#BDC3C7');
+      
+      if(answer === 'right') {
+        btn.style.backgroundColor = 'var(--success)';
+        btn.style.color = 'white';
+        fb.className = "feedback success";
+        fb.innerHTML = "🎯 Exactement ! Un coefficient très proche de 1 signifie que la corrélation entre les années et le chiffre d'affaires est quasi parfaite. La tendance lourde dessinée par la droite est fiable, c'est le moment d'investir avec confiance !";
+      } else {
+        btn.style.backgroundColor = 'var(--danger)';
+        btn.style.color = 'white';
+        fb.className = "feedback error";
+        fb.innerHTML = "❌ Tu te fais rouler dans la farine ! Plus le chiffre 'r' s'approche de 1 ou de -1, plus la fiabilité de l'équation mathématique est excellente !";
+      }
+    }
+  </script>
+
+</body>
+</html>

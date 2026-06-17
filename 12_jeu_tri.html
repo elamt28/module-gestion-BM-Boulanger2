@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeu : Le Grand Tri du Fournil</title>
+<style>
+  :root {
+    --primary: #8E44AD;
+    --secondary: #2C3E50;
+    --actif: #2980B9;
+    --passif: #E67E22;
+    --charge: #C0392B;
+    --produit: #27AE60;
+    --light: #FDFEFE;
+    --dark: #1A252F;
+    --bg-color: #F4F6F6;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .nav-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--secondary);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  .back-btn:active {
+    transform: scale(0.98);
+  }
+  h1 {
+    color: var(--primary);
+    border-bottom: 4px dashed var(--secondary);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .game-container {
+    background-color: var(--bg-color);
+    border: 4px solid var(--secondary);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin-top: 20px;
+  }
+  
+  /* Illustration SVG */
+  .illustration-container {
+    margin: 0 auto 25px auto;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* Zone des items à trier */
+  .items-pool {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    min-height: 80px;
+    padding: 20px;
+    background: #FFF;
+    border: 3px dashed #BDC3C7;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  .item {
+    background-color: #ECF0F1;
+    border: 2px solid #95A5A6;
+    color: var(--secondary);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+  }
+  .item.selected {
+    background-color: var(--primary);
+    color: #FFF;
+    border-color: var(--secondary);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
+    z-index: 10;
+  }
+  .item.correct {
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+    color: white;
+    border-color: transparent;
+  }
+  
+  /* Zones de dépôt */
+  .drop-zones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 600px) {
+    .drop-zones {
+      grid-template-columns: 1fr;
+    }
+  }
+  .zone {
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 4px dashed transparent;
+  }
+  .zone:hover {
+    filter: brightness(0.95);
+  }
+  .zone-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #FFF;
+    width: 100%;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  .zone-actif { background-color: var(--actif); border-color: #1F618D; }
+  .zone-passif { background-color: var(--passif); border-color: #D35400; }
+  .zone-charge { background-color: var(--charge); border-color: #922B21; }
+  .zone-produit { background-color: var(--produit); border-color: #1E8449; }
+
+  .message {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 20px 0;
+    min-height: 40px;
+  }
+  .btn-restart {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    font-family: inherit;
+    display: none;
+    margin: 20px auto 0 auto;
+  }
+  .btn-restart:hover {
+    background-color: #732D91;
+  }
+  .footer-credit {
+    text-align: center;
+    color: #95a5a6;
+    font-size: 0.85em;
+    margin-top: 50px;
+    border-top: 1px dashed #bdc3c7;
+    padding-top: 15px;
+  }
+
+  /* Animation erreur */
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+  }
+  .shake {
+    animation: shake 0.4s;
+    background-color: #E74C3C !important;
+    color: white !important;
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Le Grand Tri du Fournil
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p>Ne mélangeons pas les torchons et les serviettes... ni le Bilan et le Compte de Résultat ! <br><strong>Règle du jeu :</strong> Touche une étiquette pour la sélectionner, puis touche la boîte dans laquelle elle doit être rangée. <em>(Active le son de ton appareil !)</em></p>
+
+  <div class="game-container">
+    
+    <!-- Illustration SVG Cartoon -->
+    <div class="illustration-container">
+      <svg viewBox="0 0 400 200" width="100%" height="auto">
+        <rect width="400" height="200" fill="#E8F8F5" rx="10"/>
+        
+        <!-- Le boulanger qui jongle -->
+        <g transform="translate(200, 120)">
+          <circle cx="0" cy="0" r="40" fill="#F1C40F" stroke="#2C3E50" stroke-width="3"/>
+          <path d="M -30 -30 C -60 -100, 60 -100, 30 -30 Z" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+          <rect x="-25" y="-35" width="50" height="15" fill="#FFF" stroke="#2C3E50" stroke-width="3"/>
+          <!-- Visage concentré -->
+          <circle cx="-15" cy="-5" r="5" fill="#2C3E50"/>
+          <circle cx="15" cy="-5" r="5" fill="#2C3E50"/>
+          <path d="M -10 15 Q 0 25 10 15" fill="none" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+          <path d="M -25 -15 L -10 -10" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 25 -15 L 10 -10" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+          
+          <!-- Bras -->
+          <path d="M -35 20 Q -70 40 -80 0" fill="none" stroke="#2C3E50" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 35 20 Q 70 40 80 0" fill="none" stroke="#2C3E50" stroke-width="12" stroke-linecap="round"/>
+        </g>
+        
+        <!-- Objets en l'air -->
+        <rect x="60" y="40" width="30" height="40" fill="#FFF" stroke="#2C3E50" stroke-width="2" transform="rotate(-15 60 40)"/>
+        <line x1="65" y1="50" x2="85" y2="50" stroke="#E74C3C" stroke-width="2" transform="rotate(-15 60 40)"/>
+        <text x="75" y="70" font-size="10" font-weight="bold" fill="#2C3E50" transform="rotate(-15 60 40)">EDF</text>
+        
+        <path d="M 120 20 Q 140 10 160 30" fill="none" stroke="#D35400" stroke-width="15" stroke-linecap="round" transform="rotate(20 140 20)"/>
+        
+        <rect x="250" y="30" width="40" height="25" fill="#27AE60" stroke="#2C3E50" stroke-width="2" transform="rotate(10 250 30)"/>
+        <circle cx="270" cy="42" r="6" fill="#FFF" transform="rotate(10 250 30)"/>
+        
+        <rect x="320" y="70" width="40" height="30" fill="#BDC3C7" stroke="#2C3E50" stroke-width="3" rx="3" transform="rotate(-20 320 70)"/>
+        <circle cx="340" cy="85" r="8" fill="#F39C12" transform="rotate(-20 320 70)"/>
+      </svg>
+    </div>
+
+    <!-- Les éléments à trier -->
+    <div id="items-pool" class="items-pool">
+      <!-- Généré par JS -->
+    </div>
+
+    <!-- Les 4 zones de destination -->
+    <div class="drop-zones">
+      <div class="zone zone-actif" onclick="attemptDrop('actif')">
+        <div class="zone-title">ACTIF (Bilan)</div>
+        <span style="color: rgba(255,255,255,0.8); font-size: 0.9em;">Ce que je possède / Emplois</span>
+      </div>
+      <div class="zone zone-passif" onclick="attemptDrop('passif')">
+        <div class="zone-title">PASSIF (Bilan)</div>
+        <span style="color: rgba(255,255,255,0.8); font-size: 0.9em;">Ressources / Ce que je dois</span>
+      </div>
+      <div class="zone zone-charge" onclick="attemptDrop('charge')">
+        <div class="zone-title">CHARGES (Résultat)</div>
+        <span style="color: rgba(255,255,255,0.8); font-size: 0.9em;">Ce que je dépense / Usure</span>
+      </div>
+      <div class="zone zone-produit" onclick="attemptDrop('produit')">
+        <div class="zone-title">PRODUITS (Résultat)</div>
+        <span style="color: rgba(255,255,255,0.8); font-size: 0.9em;">Ce que j'encaisse / Enrichissement</span>
+      </div>
+    </div>
+
+    <div id="message" class="message"></div>
+    <button id="btn-restart" class="btn-restart" onclick="initGame()">Recommencer avec 10 nouveaux mots</button>
+
+  </div>
+
+  <div class="footer-credit">
+    Une idée de Emmanuel Boutée
+  </div>
+
+  <script>
+    // Audio Context Setup (Standalone Synthesizer)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playTone(freq, type, duration, vol=0.1) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + duration);
+    }
+
+    function playSuccess() {
+      playTone(600, 'sine', 0.1);
+      setTimeout(() => playTone(800, 'sine', 0.2), 100);
+    }
+
+    function playError() {
+      playTone(200, 'sawtooth', 0.3, 0.2);
+    }
+
+    function playVictory() {
+      const notes = [400, 500, 600, 800];
+      notes.forEach((freq, i) => {
+        setTimeout(() => playTone(freq, 'sine', 0.2, 0.15), i * 150);
+      });
+    }
+
+    // Base de données étendue (60 éléments spécifiques à la boulangerie)
+    const allItems = [
+      // ACTIFS (15)
+      { text: "Four à sole mécanisé", cat: "actif" },
+      { text: "Fonds de commerce", cat: "actif" },
+      { text: "Pétrin à spirale neuf", cat: "actif" },
+      { text: "Chambre de fermentation", cat: "actif" },
+      { text: "Caisse enregistreuse tactile", cat: "actif" },
+      { text: "Solde positif au Crédit Agricole", cat: "actif" },
+      { text: "Stock de farine T65", cat: "actif" },
+      { text: "Stock d'emballages pâtissiers", cat: "actif" },
+      { text: "Camionnette de livraison", cat: "actif" },
+      { text: "Monnaie dans le tiroir-caisse", cat: "actif" },
+      { text: "Créance client (Mairie de Chartres)", cat: "actif" },
+      { text: "Caution versée pour le local", cat: "actif" },
+      { text: "Valeurs Mobilières de Placement", cat: "actif" },
+      { text: "Stock de beurre de baratte", cat: "actif" },
+      { text: "Droit au bail", cat: "actif" },
+
+      // PASSIFS (15)
+      { text: "Capital social de départ", cat: "passif" },
+      { text: "Emprunt bancaire (sur 5 ans)", cat: "passif" },
+      { text: "Découvert bancaire autorisé", cat: "passif" },
+      { text: "Facture impayée du meunier", cat: "passif" },
+      { text: "TVA à reverser à l'État", cat: "passif" },
+      { text: "Cotisations URSSAF à payer", cat: "passif" },
+      { text: "Résultat net (Bénéfice de l'année)", cat: "passif" },
+      { text: "Résultat net (Perte de l'année)", cat: "passif" },
+      { text: "Dettes envers l'artisan électricien", cat: "passif" },
+      { text: "Réserve légale", cat: "passif" },
+      { text: "Provisions pour litige prud'hommes", cat: "passif" },
+      { text: "Avance reçue d'un client", cat: "passif" },
+      { text: "Subvention d'investissement", cat: "passif" },
+      { text: "Concours bancaires courants", cat: "passif" },
+      { text: "Prêt d'honneur de la région", cat: "passif" },
+
+      // CHARGES (15)
+      { text: "Achat de sacs de farine", cat: "charge" },
+      { text: "Facture d'électricité (EDF)", cat: "charge" },
+      { text: "Facture d'eau", cat: "charge" },
+      { text: "Salaire du tourier", cat: "charge" },
+      { text: "Charges sociales (URSSAF du mois)", cat: "charge" },
+      { text: "Loyer mensuel de la boutique", cat: "charge" },
+      { text: "Intérêts de l'emprunt bancaire", cat: "charge" },
+      { text: "Dotations aux amortissements du four", cat: "charge" },
+      { text: "Publicité dans l'Echo Républicain", cat: "charge" },
+      { text: "Prime d'assurance multirisque", cat: "charge" },
+      { text: "Achat de levure fraîche", cat: "charge" },
+      { text: "Redevance crédit-bail (machine à café)", cat: "charge" },
+      { text: "Frais d'entretien de la camionnette", cat: "charge" },
+      { text: "Honoraires de l'expert-comptable", cat: "charge" },
+      { text: "Amende pour stationnement gênant", cat: "charge" },
+
+      // PRODUITS (15)
+      { text: "Vente de baguettes de Tradition", cat: "produit" },
+      { text: "Vente de viennoiseries", cat: "produit" },
+      { text: "Prestation traiteur pour un mariage", cat: "produit" },
+      { text: "Vente de la spécialité Le Paris-Chartres", cat: "produit" },
+      { text: "Subvention d'exploitation (Aide État)", cat: "produit" },
+      { text: "Vente de l'ancienne camionnette", cat: "produit" },
+      { text: "Reprises sur amortissements", cat: "produit" },
+      { text: "Intérêts perçus sur placements", cat: "produit" },
+      { text: "Ventes de sodas et boissons", cat: "produit" },
+      { text: "Escomptes obtenus des fournisseurs", cat: "produit" },
+      { text: "Remboursement d'assurance (sinistre)", cat: "produit" },
+      { text: "Production stockée (augmentation)", cat: "produit" },
+      { text: "Ventes de bonbons au détail", cat: "produit" },
+      { text: "Chiffre d'affaires global", cat: "produit" },
+      { text: "Produits des activités annexes", cat: "produit" }
+    ];
+
+    let currentItems = [];
+    let selectedItemElement = null;
+    let itemsRemaining = 0;
+
+    // Mélanger un tableau
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function initGame() {
+      // Activer l'audio context au premier clic s'il est suspendu
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const pool = document.getElementById('items-pool');
+      pool.innerHTML = '';
+      document.getElementById('message').innerText = '';
+      document.getElementById('btn-restart').style.display = 'none';
+      selectedItemElement = null;
+
+      // Nettoyer les zones de dépôt
+      document.querySelectorAll('.zone').forEach(zone => {
+        const children = Array.from(zone.children);
+        children.forEach(child => {
+          if (!child.classList.contains('zone-title') && child.tagName !== 'SPAN') {
+            zone.removeChild(child);
+          }
+        });
+      });
+
+      // Sélectionner 10 éléments au hasard pour la partie
+      shuffle(allItems);
+      currentItems = allItems.slice(0, 10);
+      itemsRemaining = currentItems.length;
+
+      // Créer les étiquettes
+      currentItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerText = item.text;
+        div.dataset.cat = item.cat;
+        div.dataset.id = index;
+        div.onclick = () => selectItem(div);
+        pool.appendChild(div);
+      });
+    }
+
+    function selectItem(element) {
+      if (element.classList.contains('correct')) return; 
+
+      // Désélectionner les autres
+      document.querySelectorAll('.item').forEach(el => el.classList.remove('selected'));
+      
+      // Sélectionner le nouveau
+      element.classList.add('selected');
+      selectedItemElement = element;
+      
+      // Petit son de clic optionnel (très court)
+      playTone(400, 'triangle', 0.05, 0.05);
+    }
+
+    function attemptDrop(targetCategory) {
+      if (!selectedItemElement) return;
+
+      const itemCategory = selectedItemElement.dataset.cat;
+
+      if (itemCategory === targetCategory) {
+        // Bonne réponse
+        playSuccess();
+        
+        selectedItemElement.classList.remove('selected');
+        selectedItemElement.classList.add('correct');
+        selectedItemElement.onclick = null; 
+        
+        const zone = document.querySelector(`.zone-${targetCategory}`);
+        selectedItemElement.style.backgroundColor = getComputedStyle(zone).backgroundColor;
+        selectedItemElement.style.color = "white";
+        selectedItemElement.style.borderColor = "transparent";
+
+        zone.appendChild(selectedItemElement);
+        selectedItemElement = null;
+        itemsRemaining--;
+
+        if (itemsRemaining === 0) {
+          victoire();
+        }
+
+      } else {
+        // Mauvaise réponse
+        playError();
+        selectedItemElement.classList.remove('selected');
+        selectedItemElement.classList.add('shake');
+        
+        setTimeout(() => {
+          selectedItemElement.classList.remove('shake');
+        }, 400);
+        
+        selectedItemElement = null;
+      }
+    }
+
+    function victoire() {
+      playVictory();
+      const msg = document.getElementById('message');
+      msg.innerText = "🏆 Rangement impeccable ! Ton expert-comptable est fier de toi !";
+      msg.style.color = "var(--primary)";
+      document.getElementById('btn-restart').style.display = "block";
+    }
+
+    window.onload = initGame;
+  </script>
+
+</body>
+</html>

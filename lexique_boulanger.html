@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Lexique du Boulanger (BM)</title>
+<style>
+  :root {
+    --primary: #D35400; /* Orange Cuisson */
+    --secondary: #2C3E50; /* Bleu Ardoise */
+    --accent: #F1C40F; /* Jaune Doré / Blé */
+    --light: #FDFEFE;
+    --dark: #1A252F;
+    --bg-card: #F8F9FA;
+  }
+  body {
+    font-family: 'Franklin Gothic Medium', 'Franklin Gothic', 'ITC Franklin Gothic', Arial, sans-serif;
+    font-size: 1.15rem; 
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 950px;
+    margin: 0 auto;
+  }
+  .nav-header, .nav-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  .nav-footer {
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dashed #BDC3C7;
+  }
+  .back-btn {
+    display: inline-block;
+    background-color: var(--secondary);
+    color: var(--light);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  .back-btn:hover {
+    background-color: var(--primary);
+  }
+  h1 {
+    color: var(--primary);
+    text-align: center;
+    border-bottom: 4px dashed var(--accent);
+    padding-bottom: 15px;
+    font-size: 2.2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .author-tag {
+    font-size: 0.45em;
+    color: #fff;
+    background-color: var(--secondary);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Zone de recherche et filtres */
+  .search-container {
+    background-color: var(--secondary);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .search-bar {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    margin-bottom: 15px;
+  }
+  .search-bar:focus {
+    outline: 3px solid var(--accent);
+  }
+  .alphabet-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+  }
+  .alpha-btn {
+    background-color: #34495E;
+    color: #FFF;
+    border: 1px solid #BDC3C7;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    transition: 0.2s;
+  }
+  .alpha-btn:hover, .alpha-btn.active {
+    background-color: var(--accent);
+    color: var(--dark);
+    border-color: var(--accent);
+  }
+
+  /* Liste du Lexique */
+  .lexicon-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .term-card {
+    background-color: var(--bg-card);
+    border-left: 6px solid var(--secondary);
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    animation: fadeIn 0.4s;
+  }
+  .term-title {
+    font-size: 1.4em;
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .term-def {
+    color: var(--dark);
+  }
+  .term-example {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #7F8C8D;
+    font-style: italic;
+  }
+  .no-results {
+    text-align: center;
+    color: #7F8C8D;
+    font-size: 1.2em;
+    padding: 20px;
+    font-style: italic;
+    display: none;
+  }
+
+  .footer-credit {
+    text-align: center;
+    color: #95a5a6;
+    font-size: 0.85em;
+    margin-top: 50px;
+    border-top: 1px dashed #bdc3c7;
+    padding-top: 15px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-header">
+    <a href="sommaire.html" class="back-btn">⬅ Retour au sommaire</a>
+  </div>
+
+  <h1>
+    Le Lexique du Boulanger
+    <span class="author-tag">proposé par Emmanuel Boutée</span>
+  </h1>
+
+  <p style="text-align: center;">Maîtrise le vocabulaire financier de ton entreprise aussi bien que tes temps de pétrissage !</p>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Rechercher un terme (ex: EBE, Seuil, Freinte, CMUP...)" onkeyup="filterLexicon()">
+    <div class="alphabet-filters" id="alphabet-container">
+      </div>
+  </div>
+
+  <div id="no-results" class="no-results">
+    Aucun terme trouvé. La pâte n'a pas levé sur ce mot !
+  </div>
+
+  <div class="lexicon-list" id="lexicon-list">
+    
+    <div class="term-card" data-term="Actif">
+      <div class="term-title">Actif</div>
+      <div class="term-def">Partie gauche du bilan comptable. Représente tout ce que possède la boulangerie (l'utilisation de l'argent).</div>
+      <div class="term-example">Exemple : Le four rotatif, le pétrin, les stocks de farine, le solde positif en banque.</div>
+    </div>
+
+    <div class="term-card" data-term="Amortissement">
+      <div class="term-title">Amortissement</div>
+      <div class="term-def">Constatation comptable de la perte de valeur d'un matériel lourd due à l'usure ou au temps. C'est une charge calculée fictive (l'argent ne sort pas de la banque).</div>
+      <div class="term-example">Exemple : Ton four à 15 000 € amorti sur 5 ans perd "théoriquement" 3 000 € de valeur par an.</div>
+    </div>
+
+    <div class="term-card" data-term="Apport personnel">
+      <div class="term-title">Apport personnel</div>
+      <div class="term-def">L'argent de ta propre poche que tu injectes dans l'entreprise au départ pour convaincre le banquier de te suivre. Entre dans les capitaux propres.</div>
+    </div>
+
+    <div class="term-card" data-term="Approvisionnement">
+      <div class="term-title">Approvisionnement</div>
+      <div class="term-def">Action d'acheter et de stocker les matières premières nécessaires à la production de pain et viennoiseries.</div>
+    </div>
+
+    <div class="term-card" data-term="Arrhes / Acomptes">
+      <div class="term-title">Arrhes / Acomptes</div>
+      <div class="term-def">Somme d'argent versée d'avance par un client pour bloquer une commande. C'est un Passif (une dette envers le client) tant que la commande n'est pas livrée !</div>
+      <div class="term-example">Exemple : L'acompte versé par un client pour une commande de 150 pièces montées pour un mariage.</div>
+    </div>
+
+    <div class="term-card" data-term="Besoin en Fonds de Roulement (BFR)">
+      <div class="term-title">Besoin en Fonds de Roulement (BFR)</div>
+      <div class="term-def">L'argent bloqué en permanence pour financer le décalage quotidien entre le paiement de tes achats et l'encaissement de tes ventes.</div>
+      <div class="term-example">Exemple : (Stock de farine + Pain dû par les restaus partenaires) - Dettes envers le meunier.</div>
+    </div>
+
+    <div class="term-card" data-term="Bilan Comptable">
+      <div class="term-title">Bilan Comptable</div>
+      <div class="term-def">Photographie du patrimoine du fournil à un instant T (généralement au 31 décembre). Il est toujours équilibré : Actif = Passif.</div>
+    </div>
+
+    <div class="term-card" data-term="Budget de Trésorerie">
+      <div class="term-title">Budget de Trésorerie</div>
+      <div class="term-def">Tableau prévisionnel qui anticipe mois par mois les entrées réelles (encaissements) et les sorties d'argent (décaissements) sur le compte bancaire.</div>
+    </div>
+
+    <div class="term-card" data-term="Capacité d'Autofinancement (CAF)">
+      <div class="term-title">Capacité d'Autofinancement (CAF)</div>
+      <div class="term-def">Le flux de trésorerie potentiel sécrété par l'activité de la boulangerie. C'est l'argent disponible pour rembourser tes emprunts ou acheter du nouveau matériel.</div>
+    </div>
+
+    <div class="term-card" data-term="Charge Fixe">
+      <div class="term-title">Charge Fixe</div>
+      <div class="term-def">Dépense de structure indépendante du nombre de baguettes fabriquées. Que tu vendes 1 ou 10 000 pains, elle reste identique.</div>
+      <div class="term-example">Exemple : Le loyer de la boutique, l'assurance multirisque, l'abonnement internet.</div>
+    </div>
+
+    <div class="term-card" data-term="Charge Variable">
+      <div class="term-title">Charge Variable</div>
+      <div class="term-def">Dépense d'exploitation qui évolue proportionnellement au volume de ta production.</div>
+      <div class="term-example">Exemple : La farine, la levure, le beurre, les sacs en papier d'emballage.</div>
+    </div>
+
+    <div class="term-card" data-term="Chiffre d'Affaires (CA)">
+      <div class="term-title">Chiffre d'Affaires (CA)</div>
+      <div class="term-def">Montant total des ventes de produits (pains, gâteaux, formules midi) réalisées par la boulangerie sur une période donnée (calculé Hors Taxes).</div>
+    </div>
+
+    <div class="term-card" data-term="CMUP">
+      <div class="term-title">CMUP (Coût Moyen Unitaire Pondéré)</div>
+      <div class="term-def">Méthode de valorisation des stocks en fin de mois permettant de lisser le coût des matières premières achetées à des prix changeants.</div>
+      <div class="term-example">Exemple : Permet de calculer la valeur moyenne de ton stock de beurre quand le prix au kilo fluctue chez le grossiste.</div>
+    </div>
+
+    <div class="term-card" data-term="Coefficient multiplicateur">
+      <div class="term-title">Coefficient multiplicateur</div>
+      <div class="term-def">Outil pratique appliqué au coût matière HT d'une fiche technique pour fixer rapidement un prix de vente TTC en boutique tout en s'assurant une marge.</div>
+    </div>
+
+    <div class="term-card" data-term="Coût de passation">
+      <div class="term-title">Coût de passation</div>
+      <div class="term-def">Frais administratifs et temps passé liés au déclenchement d'une commande auprès d'un fournisseur. Multiplier les mini-commandes fait grimper ce coût.</div>
+    </div>
+
+    <div class="term-card" data-term="Coût de possession">
+      <div class="term-title">Coût de possession</div>
+      <div class="term-def">Frais liés au stockage des marchandises (énergie des chambres de pousse, risque de détérioration, capital immobilisé).</div>
+    </div>
+
+    <div class="term-card" data-term="Coût de revient">
+      <div class="term-title">Coût de revient</div>
+      <div class="term-def">La somme de tout ce qu'a coûté la fabrication et la vente d'un produit (matières premières + temps de main d'œuvre + quote-part des charges fixes de la boutique).</div>
+    </div>
+
+    <div class="term-card" data-term="Décaissement">
+      <div class="term-title">Décaissement</div>
+      <div class="term-def">Sortie réelle d'argent du compte de la boulangerie (paiement effectif d'un fournisseur ou d'un salaire). Différent d'une charge, qui peut être payée plus tard.</div>
+    </div>
+
+    <div class="term-card" data-term="Dettes fournisseurs">
+      <div class="term-title">Dettes fournisseurs</div>
+      <div class="term-def">Somme d'argent que tu dois à tes partenaires professionnels et que tu n'as pas encore payée. Figure au Passif du bilan.</div>
+      <div class="term-example">Exemple : Le compte en attente de règlement chez ton meunier pour la livraison de farine du mois.</div>
+    </div>
+
+    <div class="term-card" data-term="Dotation aux amortissements">
+      <div class="term-title">Dotation aux amortissements</div>
+      <div class="term-def">L'écriture comptable annuelle enregistrant la charge calculée de l'usure de tes machines au compte de résultat.</div>
+    </div>
+
+    <div class="term-card" data-term="Écart">
+      <div class="term-title">Écart</div>
+      <div class="term-def">Différence calculée dans un tableau de bord entre le Réalisé et le Prévu (Écart = Réalisé - Prévu). Permet d'ajuster le cap.</div>
+    </div>
+
+    <div class="term-card" data-term="Excédent Brut d'Exploitation (EBE)">
+      <div class="term-title">Excédent Brut d'Exploitation (EBE)</div>
+      <div class="term-def">Le roi des indicateurs de gestion. Mesure la rentabilité de ton modèle économique (produire et vendre du pain) avant l'impact des choix de financement ou des amortissements.</div>
+    </div>
+
+    <div class="term-card" data-term="Fiche technique">
+      <div class="term-title">Fiche technique</div>
+      <div class="term-def">Document combinant la recette (poids des ingrédients) et le coût financier de chaque matière pour calculer le coût matière strict d'un produit.</div>
+    </div>
+
+    <div class="term-card" data-term="Fonds de Roulement Net Global (FRNG)">
+      <div class="term-title">Fonds de Roulement Net Global (FRNG)</div>
+      <div class="term-def">Le matelas de sécurité financière à long terme de l'entreprise. Calculé par la différence : Capitaux stables - Actifs stables.</div>
+    </div>
+
+    <div class="term-card" data-term="Freinte">
+      <div class="term-title">Freinte</div>
+      <div class="term-def">La perte de poids ou de matière première inhérente au processus de fabrication (perte d'eau à la cuisson, résidus de farine dans les sacs). Doit être intégrée dans le calcul du coût de revient !</div>
+    </div>
+
+    <div class="term-card" data-term="Inventaire">
+      <div class="term-title">Inventaire</div>
+      <div class="term-def">Action de compter physiquement un par un tous les produits en stock (sacs de farine, plaques de beurre, moules) à une date précise pour valoriser le stock réel.</div>
+    </div>
+
+    <div class="term-card" data-term="Marge commerciale">
+      <div class="term-title">Marge commerciale</div>
+      <div class="term-def">Gain réalisé sur la revente de produits achetés tout prêts sans transformation (comme les canettes de soda ou les bonbons). Formula : Ventes - Coût d'achat.</div>
+    </div>
+
+    <div class="term-card" data-term="Moindres carrés">
+      <div class="term-title">Moindres carrés</div>
+      <div class="term-def">Méthode statistique de prévision des ventes basée sur l'historique mathématique pour projeter la tendance (le trend) des années futures.</div>
+    </div>
+
+    <div class="term-card" data-term="Passif">
+      <div class="term-title">Passif</div>
+      <div class="term-def">Partie droite du bilan. Liste l'origine de l'argent (les ressources permanentes et les dettes de la boulangerie). Ce que l'entreprise "doit".</div>
+    </div>
+
+    <div class="term-card" data-term="PEPS">
+      <div class="term-title">PEPS (Premier Entré, Premier Sorti)</div>
+      <div class="term-def">Règle de gestion des stocks (FIFO) consistant à utiliser en priorité les matières premières les plus anciennes pour éviter le dépassement des dates de péremption. Vital pour la gestion de la crèmerie !</div>
+    </div>
+
+    <div class="term-card" data-term="Point Mort">
+      <div class="term-title">Point Mort</div>
+      <div class="term-def">Le moment précis de l'année (exprimé en nombre de jours) où le Seuil de Rentabilité est atteint et où l'artisan commence enfin à dégager du pur bénéfice net.</div>
+    </div>
+
+    <div class="term-card" data-term="Produit">
+      <div class="term-title">Produit</div>
+      <div class="term-def">Toute recette comptable qui enrichit le compte de résultat (majoritairement le Chiffre d'Affaires de la boutique).</div>
+    </div>
+
+    <div class="term-card" data-term="Rupture de stock">
+      <div class="term-title">Rupture de stock</div>
+      <div class="term-def">Situation critique où une matière vient à manquer. En boulangerie, manquer de farine un samedi matin détruit immédiatement le CA et l'image de marque.</div>
+    </div>
+
+    <div class="term-card" data-term="Seuil de Rentabilité">
+      <div class="term-title">Seuil de Rentabilité</div>
+      <div class="term-def">Le niveau de chiffre d'affaires minimum à réaliser dans l'année pour que le résultat soit de zéro (couvrir la totalité des charges fixes et variables). Marche ou crêpes !</div>
+    </div>
+
+    <div class="term-card" data-term="Taux de marque">
+      <div class="term-title">Taux de marque</div>
+      <div class="term-def">Pourcentage de marge inclus dans le prix de vente d'un produit. Formula : (Marge commerciale / Prix de vente HT) × 100.</div>
+    </div>
+
+    <div class="term-card" data-term="Trésorerie Nette">
+      <div class="term-title">Trésorerie Nette</div>
+      <div class="term-def">L'argent disponible à l'instant T en banque et en caisse. S'obtient par la formule : FRNG - BFR.</div>
+    </div>
+
+    <div class="term-card" data-term="TVA">
+      <div class="term-title">TVA (Taxe sur la Valeur Ajoutée)</div>
+      <div class="term-def">Impôt indirect collecté sur les clients (ex: 5,5% sur le pain) pour le compte de l'État, diminué de la TVA payée sur les achats.</div>
+    </div>
+
+    <div class="term-card" data-term="Valeur Actuelle Nette (VAN)">
+      <div class="term-title">Valeur Actuelle Nette (VAN)</div>
+      <div class="term-def">Outil financier permettant d'évaluer si l'achat d'une grosse machine (comme une diviseuse-formeuse de pointe) sera amorti et rentable au regard du temps.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-credit">
+    Une idée de Emmanuel Boutée
+  </div>
+
+  <script>
+    let currentFilterLetter = '';
+
+    function initAlphabet() {
+      const container = document.getElementById('alphabet-container');
+      const btnAll = document.createElement('button');
+      btnAll.innerText = "TOUT";
+      btnAll.className = "alpha-btn active";
+      btnAll.onclick = () => filterByLetter('', btnAll);
+      container.appendChild(btnAll);
+
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+      alphabet.forEach(letter => {
+        const btn = document.createElement('button');
+        btn.innerText = letter;
+        btn.className = "alpha-btn";
+        btn.onclick = () => filterByLetter(letter, btn);
+        container.appendChild(btn);
+      });
+    }
+
+    function filterByLetter(letter, btnElement) {
+      currentFilterLetter = letter;
+      document.querySelectorAll('.alpha-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+      filterLexicon();
+    }
+
+    function filterLexicon() {
+      const searchInput = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.term-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const term = card.getAttribute('data-term');
+        const firstLetter = term.charAt(0).toUpperCase();
+        
+        const matchesSearch = term.toLowerCase().includes(searchInput);
+        const matchesLetter = currentFilterLetter === '' || firstLetter === currentFilterLetter;
+
+        if (matchesSearch && matchesLetter) {
+          card.style.display = "block";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      const noResults = document.getElementById('no-results');
+      if (visibleCount === 0) {
+        noResults.style.display = "block";
+      } else {
+        noResults.style.display = "none";
+      }
+    }
+
+    window.onload = () => {
+      const list = document.getElementById('lexicon-list');
+      const cards = Array.from(list.getElementsByClassName('term-card'));
+      
+      cards.sort((a, b) => {
+        return a.getAttribute('data-term').localeCompare(b.getAttribute('data-term'));
+      });
+      
+      list.innerHTML = '';
+      cards.forEach(card => list.appendChild(card));
+
+      initAlphabet();
+    };
+  </script>
+
+</body>
+</html>
